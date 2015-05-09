@@ -2,7 +2,7 @@
 
 # custom
 alias art='php artisan'
-alias cm='cmatrix -axbslC cyan -u 1'
+alias cm='cmatrix -absC cyan -u 1'
 
 # tmux
 alias tm='tmux -2'
@@ -41,7 +41,8 @@ man() {
 }
 
 # alias for colored grep
+alias grep='grep --color=always'
 coloredgrep() {
-    grep -n --color=always -r $1 | less -R
+    grep -n -r $1 $2 | less -R
 }
 alias gl=coloredgrep

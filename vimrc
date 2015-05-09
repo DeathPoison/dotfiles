@@ -15,6 +15,11 @@ Plugin 'kien/ctrlp.vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'Shougo/neocomplete.vim'
+Plugin 'tpope/vim-fugitive'
+"Plugin 'tpope/vim-surround.git'
+
+"Plugin 'vim-scripts/phpfolding.vim'
+
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -36,7 +41,10 @@ let g:Powerline_mode_V="V·LINE"
 let g:Powerline_mode_cv="V·BLOCK"
 let g:Powerline_mode_S="S·LINE"
 let g:Powerline_mode_cs="S·BLOCK"
+
+" AirLine COnfig
 let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
 
 " Custom IDE Settings
 set nocp
