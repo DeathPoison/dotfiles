@@ -46,3 +46,6 @@ coloredgrep() {
     grep -n -r $1 $2 | less -R
 }
 alias gl=coloredgrep
+
+source ~/.shell_prompt
+

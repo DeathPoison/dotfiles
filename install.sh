@@ -7,6 +7,7 @@ if [ "$(id -u)" != "0" ]; then
    cp vimrc ~/.vimrc
    cp tmux.conf ~/.tmux.conf
    cp bash_aliases ~/.bash_aliases
+   cp shell_prompt.sh ~/.shell_prompt
 
    sudo cp bash_aliases /root/.bash_aliases
 
