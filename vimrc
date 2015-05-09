@@ -17,6 +17,7 @@ Plugin 'terryma/vim-multiple-cursors'
 Plugin 'Shougo/neocomplete.vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'edkolev/tmuxline.vim'
+Plugin 'edkolev/promptline.vim'
 "Plugin 'tpope/vim-surround.git'
 
 "Plugin 'vim-scripts/phpfolding.vim'
