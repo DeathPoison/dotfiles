@@ -18,6 +18,7 @@ Plugin 'Shougo/neocomplete.vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'edkolev/tmuxline.vim'
 Plugin 'edkolev/promptline.vim'
+Plugin 'szw/vim-ctrlspace'
 "Plugin 'tpope/vim-surround.git'
 
 "Plugin 'vim-scripts/phpfolding.vim'
