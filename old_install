@@ -10,7 +10,14 @@ if [ "$(id -u)" != "0" ]; then
    cp shell_prompt.sh ~/.shell_prompt
    cp tmux_prompt.sh ~/.tmux_prompt
 
-   git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+   git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim 2>/dev/null
+
+   mkdir ~/git 2>/dev/null # install new fonts - for powerline
+   mkdir ~/git/EXTERNAL 2>/dev/null
+   git clone https://github.com/powerline/fonts.git ~/git/EXTERNAL/fonts 2>/dev/null
+   cd ~/git/EXTERNAL/fonts/
+   ./install.sh
+   sudo fc-cache -f -v 1>/dev/null
 
    vim +PluginInstall +qall
 
@@ -28,8 +35,12 @@ cp bash_aliases /root/.bash_aliases
 cp shell_prompt.sh /root/.shell_prompt
 cp tmux_prompt.sh /root/.tmux_prompt
 
-git clone https://github.com/gmarik/Vundle.vim.git /root/.vim/bundle/Vundle.vim
-vim +PluginInstall +qall
+sudo git clone https://github.com/gmarik/Vundle.vim.git /root/.vim/bundle/Vundle.vim
+sudo vim +PluginInstall +qall
 
+<<<<<<< HEAD
 echo 'install the fuck!'
 pip install thefuck
+=======
+exit 1
+>>>>>>> 2baf6b05f5e8bbcc2ad651ae7e004682ff712bb9

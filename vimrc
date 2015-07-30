@@ -18,6 +18,7 @@ Plugin 'Shougo/neocomplete.vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'edkolev/tmuxline.vim'
 Plugin 'edkolev/promptline.vim'
+Plugin 'szw/vim-ctrlspace'
 "Plugin 'tpope/vim-surround.git'
 
 "Plugin 'vim-scripts/phpfolding.vim'
@@ -52,8 +53,8 @@ let g:airline#extensions#tabline#enabled = 1
 set nocp
 set nocompatible
 set number
-set tabstop=2
-set shiftwidth=2
+set tabstop=4
+set shiftwidth=4
 set expandtab
 
 " Python Settings
