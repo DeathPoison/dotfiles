@@ -47,5 +47,8 @@ coloredgrep() {
 }
 alias gl=coloredgrep
 
+# just add fuck
+eval "$(thefuck-alias)"
+
 source ~/.shell_prompt
 

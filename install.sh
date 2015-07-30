@@ -13,6 +13,9 @@ if [ "$(id -u)" != "0" ]; then
    git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 
    vim +PluginInstall +qall
+
+   echo 'install the fuck!'
+   pip install thefuck
    exit 1
 fi
 
@@ -28,3 +31,5 @@ cp tmux_prompt.sh /root/.tmux_prompt
 git clone https://github.com/gmarik/Vundle.vim.git /root/.vim/bundle/Vundle.vim
 vim +PluginInstall +qall
 
+echo 'install the fuck!'
+pip install thefuck
