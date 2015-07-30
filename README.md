@@ -1,3 +1,9 @@
+
+reset --hard to 2baf6b0
+
+before continue!
+
+
 # dotfiles
 
 added little install script! xD
