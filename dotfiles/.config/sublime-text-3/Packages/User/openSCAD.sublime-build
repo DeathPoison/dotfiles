@@ -1,3 +1,0 @@
-{
-	"shell_cmd": "openscad -o test.stl $file; paraview test.stl"
-}
