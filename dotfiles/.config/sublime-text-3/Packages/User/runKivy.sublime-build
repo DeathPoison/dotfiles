@@ -1,0 +1,4 @@
+{
+	//"shell_cmd": "python $file -m inspector"
+	"shell_cmd": "python main.py -m inspector"
+}
