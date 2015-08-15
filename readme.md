@@ -1,1 +1,1 @@
--------------- Project moved to local git server!
+######## Project moved to local git server!
