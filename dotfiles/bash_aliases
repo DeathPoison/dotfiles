@@ -20,11 +20,11 @@ alias ta='tm a'
 alias tl='tm ls'
 
 # aptitude
-alias au='apt-get update'
+alias au='sudo apt-get update'
 alias as='aptitude search'
-alias ai='apt-get install'
-alias ag='apt-get upgrade'
-alias ad='apt-get dist-upgrade'
+alias ai='sudo apt-get install'
+alias ag='sudo apt-get upgrade'
+alias ad='sudo apt-get dist-upgrade'
 
 # git
 alias ga='git add * --all -f'

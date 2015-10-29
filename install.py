@@ -102,7 +102,7 @@ def installPackage( package ):
     if checkModule( package ):
         return False        # already installed
     else:                   # install package
-        return invoke( 'apt-get install ' + package ) 
+        return invoke( 'apt-get -y install ' + package ) 
 
 def installPackages( packages ): # only alias function...
     installed = False
