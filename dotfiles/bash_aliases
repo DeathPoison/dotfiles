@@ -36,6 +36,11 @@ alias gd='git diff'
 # color ps1 prompt
 export PS1="\[\e[0m\][\[\033[1;30m\]\d \T\[\e[0m\]] \[\e[0m\]\[\e[0;92m\]\u@\h\[\e[0m\]:\[\e[0;94m\]\w\[\033[1;30m\] ($(if [[ $? == 0 ]]; then echo "\[\e[0;92m\]\342\234\223\[\e[0m\]"; else echo "\[\e[0;91m\]\342\234\227\[\e[0m\]"; fi)\[\033[1;30m\])\[\e[0m\] $ "
 
+if [ -f "$HOME/git/EXTERNAL/Nim/bin/nim" ]; then
+    export PATH="$PATH:$HOME/git/EXTERNAL/Nim/bin/"
+    export PATH="$PATH:$HOME/.nimble/bin/"
+fi
+
 # color man pages
 man() {
     env \

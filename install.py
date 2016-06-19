@@ -15,6 +15,8 @@
 #            v0.4 - 14.08.2015 - 00:30
 #                 - added checks for os and distribution, also for remote servers
 #                 - added few more modules ;) - make it usefull!
+#            v0.5 - 19.06.2016 - 22:22
+#                 - added nim install
 
 global DEBUG
 DEBUG = True
@@ -24,11 +26,16 @@ from urllib2 import urlopen
 from shutil import copy2, copytree
 from subprocess import PIPE, Popen
 
-def copy( target, destination, user ):
+def copy( target, destination, user, overwrite = False ):
+    writeFile = False
     if not invoke( 'ls ' + destination +' 2>/dev/null' ):
+        writeFile = True
+
+    if writeFile or overwrite:
         copy2( target, destination )
         invoke( 'chown '+user+':'+user+' '+destination )
         return True
+
     return False
 
 def copyDir( target, destination, user ):
@@ -186,6 +193,7 @@ if __name__ == '__main__':
             installPackage( package )
 
     if raw_input( 'Install Git? [Y/n]:' ) in [ 'y', 'Y' ]:
+        invoke( 'mkdir -p /home/'+user+'/git/EXTERNAL' )
         if installPackage( 'git' ):
             invoke( 'git config --global user.name ' + username )
             invoke( 'git config --global user.email deathpoison.dc@gmail.com' )
@@ -248,7 +256,7 @@ if __name__ == '__main__':
 
                 for file in files:
                     if file['type'] == 'file':
-                        copy( file['target'], file['destination'], user )
+                        copy( file['target'], file['destination'], user, True )
                     elif file['type'] == 'dir':
                         if copyDir( file['target'], file['destination'], user ) and file['target'] == GIT_DIR + '/dotfiles/vim':
                             invoke( 'git clone https://github.com/gmarik/Vundle.vim.git ' + userpath + '/.vim/bundle/Vundle.vim 2>/dev/null' )
@@ -266,6 +274,25 @@ if __name__ == '__main__':
                     invoke( 'echo "fi" >> ' + userpath + '/.bashrc' )
 
                 invoke( 'vim +PluginInstall +qall' )
+
+    if raw_input( 'Install NIM-Lang? [Y/n]' ) in [ 'y', 'Y' ]:
+
+        package = 'nim'
+
+        if not checkModule( package ):
+            invoke( 'cd /home/'+user+'/git/EXTERNAL/ && git clone https://github.com/nim-lang/Nim.git' )
+            invoke( 'cd Nim' )
+            invoke( 'git clone --depth 1 https://github.com/nim-lang/csources' )
+            invoke( 'cd csources && sh build.sh' )
+            invoke( 'cd ..' )
+            invoke( 'bin/nim c koch' )
+            invoke( './koch boot -d:release' )
+            invoke( 'cd /home/'+user+'/git/EXTERNAL && git clone https://github.com/nim-lang/nimble.git' )
+            invoke( 'cd nimble' )
+            invoke( 'source /home/'+user+'/.bash_aliases' )
+            invoke( 'nim -d:release c -r src/nimble -y install' )
+            invoke( 'source /home/'+user+'/.bash_aliases' )
+
 
 
     if DISTRIBUTION in [ 'Ubuntu', 'Debian' ]:
