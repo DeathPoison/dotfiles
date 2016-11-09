@@ -17,6 +17,10 @@
 #                 - added few more modules ;) - make it usefull!
 #            v0.5 - 19.06.2016 - 22:22
 #                 - added nim install
+#            v0.6 - 09.11.2016 - 11:00
+#                 - added mnt alias
+#                 - fixed git add alias
+#                 - removed master branch from gp
 
 global DEBUG
 DEBUG = True
@@ -109,7 +113,7 @@ def installPackage( package ):
     if checkModule( package ):
         return False        # already installed
     else:                   # install package
-        return invoke( 'apt-get -y install ' + package ) 
+        return invoke( 'apt-get -y install ' + package )
 
 def installPackages( packages ): # only alias function...
     installed = False
@@ -117,7 +121,7 @@ def installPackages( packages ): # only alias function...
         if installPackage( package ):
             installed = True
     if installed:
-        return True 
+        return True
     return False
 
 def shutdown():
@@ -160,7 +164,7 @@ if __name__ == '__main__':
         ]
 
         installPackages( packages )
-    
+
     if raw_input( 'Install OpenSSH Server? [Y/n]:' ) in [ 'y', 'Y' ]:
         packages = [
             'openssh-server',
@@ -168,12 +172,12 @@ if __name__ == '__main__':
 
         installPackages( packages )
         hostPort = invoke( "cat /etc/ssh/sshd_config | grep Port | cut -d ' ' -f 2" ).strip()
-        
+
         if hostPort != '50505':
             invoke( "sed -i 's/Port 22$/Port 50505/' /etc/ssh/sshd_config" )
 
         for user in [ 'root', username ]:
-            if user == 'root': 
+            if user == 'root':
                 userpath = '/root'
             else:
                 userpath = '/home/' + user
@@ -184,7 +188,7 @@ if __name__ == '__main__':
                 raw_input( 'you have to copy your public ssh key to the server! ( already in clipboard )\nEnter to continue!' )
 
     if raw_input( 'Install Terminology? [Y/n]:' ) in [ 'y', 'Y' ]:
-        
+
         package = 'terminology'
 
         if not checkModule( package ):
@@ -220,14 +224,14 @@ if __name__ == '__main__':
 
     if raw_input( 'Install Dotfiles? [Y/n]:' ) in [ 'y', 'Y' ]:
         for user in [ 'root', username ]:
-            if user == 'root': 
+            if user == 'root':
                 userpath = '/root'
             else:
                 userpath = '/home/' + user
 
             if invoke( 'ls ' + userpath + '/.bashrc 2>/dev/null' ):
                 files = [
-                    {   
+                    {
                         'type': 'file',
                         'target': GIT_DIR + '/dotfiles/bash_aliases',
                         'destination': userpath + '/.bash_aliases',
@@ -260,9 +264,9 @@ if __name__ == '__main__':
                     elif file['type'] == 'dir':
                         if copyDir( file['target'], file['destination'], user ) and file['target'] == GIT_DIR + '/dotfiles/vim':
                             invoke( 'git clone https://github.com/gmarik/Vundle.vim.git ' + userpath + '/.vim/bundle/Vundle.vim 2>/dev/null' )
-                
-                invoke( 'mkdir ' + userpath + '/git 2>/dev/null' )     
-                invoke( 'mkdir ' + userpath + '/git/EXTERNAL 2>/dev/null' ) 
+
+                invoke( 'mkdir ' + userpath + '/git 2>/dev/null' )
+                invoke( 'mkdir ' + userpath + '/git/EXTERNAL 2>/dev/null' )
 
                 if not invoke( 'ls ' + userpath + '/git/EXTERNAL/fonts 2>/dev/null' ):
                     invoke( 'git clone https://github.com/powerline/fonts.git ' + userpath + '/git/EXTERNAL/fonts 2>/dev/null' )
@@ -300,7 +304,7 @@ if __name__ == '__main__':
             'gnome-tweak-tool'
             'malys-uniwhite',
             'delorean-dark'
-        ] 
+        ]
 
         if raw_input( 'Install Themes? [Y/n]:' ) in [ 'y', 'Y' ]:
             if not invoke( 'ls /usr/share/themes/delorean-dark 2>/dev/null' ):
