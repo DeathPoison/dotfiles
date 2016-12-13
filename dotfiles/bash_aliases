@@ -44,6 +44,9 @@ if [ -f "$HOME/git/EXTERNAL/Nim/bin/nim" ]; then
     export PATH="$PATH:$HOME/.nimble/bin/"
 fi
 
+# chrome fix for HiRes 4k Displays
+alias chrome="chromium-browser --force-device-scale-factor=2"
+
 # color man pages
 man() {
     env \
