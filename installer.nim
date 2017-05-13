@@ -4,14 +4,18 @@
 
   Script to create my linux enviroment
 
+  Before running this script, you need to execute: buildModules
+
 ]#
 
-from os       import fileExists, dirExists, sleep, commandLineParams, getCurrentDir
+from os
+import fileExists, dirExists, sleep, commandLineParams, getCurrentDir, paramCount, paramStr, walkFiles
+
 from net      import newSocket, connect, Port, close
 from rdstdin  import readPasswordFromStdin
-from posix    import getegid, onSignal, SIGINT, SIGTERM
+from posix    import opendir, readdir, getegid, onSignal, SIGINT, SIGTERM
 from tables   import toTable, keys, `[]`
-from re       import re, contains, escapeRe
+from re       import re, contains, escapeRe, find, findAll, replacef
 
 from threadpool import spawn, sync
 
@@ -33,23 +37,10 @@ import CmdDoesNotExists, CmdRaisesError
 from libraries.spinner.spinner     
 import Spinner, startSpinner, stopSpinner
 
+## import dotfiles helper
+from libraries.dotfile
+import DotfileObj, askUser, checkRoot, copy, installPackage, installPackages, getArch, getDistribution, checkServer
 
-type
-  # Container for files being used by this app
-  DotfileObj = object           ## With the creation of a referenze
-    name: string
-    isDir: bool                 ## this object transforms into a
-    overwrite: bool
-    target: string              ## immutable procedure, dont need it now!
-    destination: string
-
-## TODO read from .env file ~ https://github.com/euantorano/dotenv.nim 
-# - hint him to add namespaces           e.g.: "namespace.var = value"
-# - hint him to add array  (seq[string]) e.g.: "var[] = value"
-# - hint him to add hashes (table)       e.g.: "var[grande] = value"
-
-## TODO replace concat of long text with s.th. usefull xD, iam lazy! 
-## -> format or % or similar
 
 var DEBUG: bool = false
 let HELP: string = """
@@ -69,6 +60,7 @@ var PATH:    string = os.getEnv("PATH") ## TODO probably i need to use arnold to
 var HOME:    string = "" # /home/poisonweed
 var USER:    string = "" # your used user -> install packages and enviroment for him!
 
+var MODULES: seq[ string ] = @[] # hold list of available modules
 var HISTORY: seq[ string ] = @[] ## TODO xD replace HISTORY with cleaner summary and add async logger
 var PWD:     string  # working dir 
 var ARCH:    string  # used arch eg: x86_64
@@ -77,111 +69,9 @@ var SILENT:  bool    # ask questions?
 var FORCE:   bool    # should overwrite all?
 # TODO var PKG_MNG: string  # used package manager: only apt and apt-get for now!
 
-# ask user if he really want to do: whatToDo
-proc askUser( whatToDo: string, defaultChoice: bool = true ): bool = 
-  var defaultPossibilities = "[Y/n]"
-  if not defaultChoice:
-    defaultPossibilities = "[y/N]"
-
-  stdout.write whatToDo & " " & defaultPossibilities & ": "
-  var userChoice = stdin.readline()
-  
-  # set empty to true if wanted
-  if defaultChoice and userChoice == "":
-    userChoice = "y"
-
-  case userChoice
-  of 
-    "Y", 
-    "yes", 
-    "y":
-    result = true
-  else: result = false
-
-  HISTORY.add( "You answered with " & userChoice & " to the following question: " & whatToDo )
-
-#[ If egid > 500 i am not a root user! ]#
-proc checkRoot(): bool = getegid() < 500
-
-#[ Copy Method - selfExplaining! ]#
-proc copy( 
-  inputfile, outputfile: string, 
-  user: string = "", 
-  isDir: bool = false,
-  overwrite: bool = false 
-): bool =
-  if DEBUG:
-    echo "Try copy File: " & inputfile & " to " & outputfile
-
-  if not overwrite:
-    if checkFile(outputfile, isDir = isDir ):
-      let problem = "File " & outputfile & " already exists, should be overwritten?"
-      if not askUser( problem, false ):
-        return false
-      
-      echo "should overwrite"
-
-  var copyCommand: string = "cp "
-  if isDir:
-    copyCommand = copyCommand & "-R "
-
-  var command: string = copyCommand & inputfile & " " & outputfile
-
-  if DEBUG:
-    echo command
-
-  discard execCommand( command, user = user )
-
-  HISTORY.add( "Copied: " & inputfile & " to: " & outputfile )
-
-  return true
-
-proc installPackage( package: string ): bool =
-  ## HINT install must be quiet!
-  ## TODO add error handling here
-  result = true
-  if not checkCommand( package ):
-    discard execCommand( "apt install -y " & package, user = "root" )
-    HISTORY.add( "Installed package: " & package )  
-    result = checkCommand( package )
-
-proc installPackages( packages: seq[ string ] ): bool =
-  ## TODO remove this misuse of exceptions here!!!
-  try:
-    for package in packages:
-      if not installPackage( package ):
-        raise newException( CantInstallPackage, "Cant install package: " & package );
-  except CantInstallPackage:
-    echo getCurrentExceptionMsg()
-    return false
-  return true
-
-# get Processor Arch
-proc getArch(): string =
-  try:
-    result = execCommand( "lscpu | grep Archi | cut -d \":\" -f 2", user = "root", wantResult = true )
-  except CmdDoesNotExists:
-    raise newException(WrongOS, "No suitable OS found...")
-
-# get current distribution
-proc getDistribution(): string =
-  try:
-    result = execCommand( "lsb_release -a 2>/dev/null | grep Distributor | cut -f 2", user = "root", wantResult = true )
-  except CmdDoesNotExists:
-    if DEBUG:
-      echo "Command does not exists: " & getCurrentExceptionMsg()  
-    result = execCommand( "uname", user = "root", wantResult = true )
-
-# check if server is alive
-proc checkServer( host: string, port: Port = Port(80) ): bool =
-  var socket = newSocket()
-  try:
-    socket.connect( host, port, 500 )
-    socket.close()
-    result = true
-  except Exception:
-    discard socket
-    result = false
+## cant check if file exists, compiler stops compiling anyway
+include "importModules.nim"
+echo MODULES
 
 proc stopApplication( 
   message: string = "\n\nGo'in to stop this Application",
@@ -229,6 +119,10 @@ when isMainModule:
         else:
           continue
 
+    if not checkRoot():
+      echo "try again as root user!"
+      quit(1)
+
     if not checkServer( host = "heise.de" ):
       echo "you need an internet connection!"
       stopApplication( exitCode = 1 )
@@ -274,13 +168,10 @@ when isMainModule:
 
     echo enviroment
 
-    if not checkRoot():
-      echo "try again as root user!"
-      quit(1)
-
     if not askUser( "Want to proceed? Check the detected Enviroment above!", defaultChoice = true ):
       quit(1)
 
+#[
   block createInstallation:
     ## INSTALL PACKAGES
     ## TODO exclude lists to external files
@@ -459,7 +350,13 @@ when isMainModule:
         
         spinner.stopSpinner()   # stop spinnerThread
         sync()                  # make sure threads are finished @spinner, arnold
+]#
 
+  block installModules:
+    include "installModules.nim"
+    ## TODO USE textMacro.nim from tmp dir to check how things work!
+    #`module`.testNanzi() #.install({ "USER": USER, "HOME": HOME, "PATH": PATH, "PWD": PWD }.toTable)
+#[
   block createTerminologyPPAs:
     if checkCommand( "terminology" ): break createTerminologyPPAs        
 
@@ -672,8 +569,13 @@ when isMainModule:
         discard execCommand( r"cd " & HOME & r"/git/EXTERNAL/nimble/ && PATH=$PATH:" & HOME & "/git/EXTERNAL/Nim/bin/nim nim -d:release c -r src/nimble -y install", user = USER )
       except CmdRaisesError:
         echo getCurrentExceptionMsg()
+]#
 
-  block createMPad:
+  #block createMPad:
+  #  continue
+    #if mpad.install({ "USER": USER, "HOME": HOME, "PATH": PATH }.toTable):
+    #  echo "mpad installed"
+  #[
     if checkCommand( "mpad", user = USER ):
       break createMPad
 
@@ -700,6 +602,7 @@ when isMainModule:
     ## build mpad
     ## create symlink to ~/bin
     ## create desktop link
+  ]#
 
   block createThemeConfig:
     # add choice for few themes:

@@ -7,6 +7,14 @@
 # Author: LimeBlack ~ David Crimi - deathpoison.dc@gmail.com
 # StartDate: 31.08.2014
 #
+#             v0.9b  - 13.05.2017 - 04:05
+#                    - modules working!! 
+#                    - -> excluded them into external application, 
+#                    -    which needs to be executed BEFORE the installer will be compiled
+#                    - i need to finish the module mpad, and write some more
+#                    - i should also should add a sort of the modules and add the syntax: 00_name.nim 
+#                    - -> (use the counter like runlevels)
+#
 #             v0.9a  - 23.04.2017 - 29:40
 #                    - added user env to arnold commands
 #                    - added some users to commands

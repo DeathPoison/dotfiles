@@ -23,11 +23,13 @@ from threadpool import spawn, sync
 ## TODO create fucking nimble packages!!
 from "../inception/inception" import WrongOS, CmdDoesNotExists, CmdRaisesError, CantInstallPackage
 
-let DEBUG: bool = false
+let DEBUG: bool = true # false
 
 # TODO by adding uniq-ids to a list, i would be able to create multiple commands at once...
 var shouldStop:  bool = true   
 var interrupted: bool = false
+
+## TODO need to check source files, if not available the command will not executed!
 
 proc checkFile*( inputfile: string, isDir: bool = false ): bool =
   if DEBUG:
