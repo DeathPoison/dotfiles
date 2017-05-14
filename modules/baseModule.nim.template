@@ -1,0 +1,32 @@
+#[
+  Base Module - Dotfiles Module Template
+
+  Little module template to simplify the module creation process
+
+  v0.1  - 13.05.2017 - 15:00
+        - added a simple base Module
+]#
+
+## import dotfiles helper
+from "../libraries/dotfile" import DotfileModuleAttributes
+
+proc install*( vars: DotfileModuleAttributes ): bool =
+
+  # include vars like: HOME, USER, ...
+  include "../buildEnvironment.nim"
+
+  echo "--------------------------------------------------"
+  echo "# Going to install a Base Module."
+  echo "--------------------------------------------------"
+
+
+when isMainModule:
+  
+  include "../testEnvironment.nim"
+  
+  discard install(DotfileModuleAttributes(
+    user: USER,
+    path: PATH,
+    home: HOME,
+    pwd:  PWD
+  ))

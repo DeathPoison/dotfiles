@@ -7,6 +7,32 @@
 # Author: LimeBlack ~ David Crimi - deathpoison.dc@gmail.com
 # StartDate: 31.08.2014
 #
+#             v1.0   - 14.05.2017 - 03:30
+#                    - added runInstallation.sh
+#                    - -> builds and run through the whole installation process
+#
+#                    - added bash script to install nim and nimble: installNim.sh
+#
+#                    - added a basic module template
+#                    - added buildEnvironment/tstEnvironment to test Modules
+#
+#                    - Created working and ready Modules:
+#                    - M01Init        -> installs Packages
+#                    - M05Dotfiles    -> copy all dotfiles
+#                    - M20Git         -> configure github
+#                    - M20OpenSSH     -> not tested
+#                    - M20WebDev      -> not tested
+#                    - M50Terminology -> not tested
+#                    - M50Themes      -> should install gtk3 themes ! unfinished, unimportant
+#                    - M50Vim         -> installs VIM-Plugins ( vundle and config, should already there! )
+#                    - M50Wine        -> installs wine ! not tested, should work
+#                    - M50mPad        -> installs mPad
+#
+#                    - this should be a fully working version ( except few modules )
+#
+#             v0.9c  - 13.05.2017 - 17:30
+#                    - excluded all blocks to modules
+#
 #             v0.9b  - 13.05.2017 - 04:05
 #                    - modules working!! 
 #                    - -> excluded them into external application, 

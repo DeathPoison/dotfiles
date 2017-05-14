@@ -35,6 +35,14 @@ type
     target*: string              ## immutable procedure, dont need it now!
     destination*: string
 
+  DotfileModuleAttributes* = object
+    user*: string
+    home*: string
+    path*: string
+    pwd*: string
+    force*: bool
+    silent*: bool
+
 var DEBUG: bool = false
 let HELP: string = """
   

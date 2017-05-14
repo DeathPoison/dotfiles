@@ -4,11 +4,13 @@ import walkFiles
 from re
 import re, contains, escapeRe, find, findAll, replacef
 
+let DEBUG: bool = false
+
 when isMainModule:
 
   var MODULES: seq[ string ] = @[] # hold list of available modules
   
-  var argumentString: string = """"USER":USER, "PATH":PATH, "HOME":HOME, "PWD":PWD"""    ## , "SILENT":SILENT, "FORCE":FORCE
+  var argumentString: string = "user: USER, path: PATH, home: HOME, pwd: PWD, silent: SILENT, force: FORCE"
   var installContent: string
 
   let importFile  = open("importModules.nim",  fmWrite)
@@ -19,15 +21,20 @@ when isMainModule:
 
   ## create: import file
   for file in walkFiles("modules/*.nim"):
-    MODULES.add( replacef(file, re"modules/*([a-zA-Z]*).nim$", "$1") )
-    importFile.write("MODULES.add(\"" & replacef(file, re"modules/*([a-zA-Z]*).nim$", "$1") & "\")\n")
-    importFile.write("import " & file[0..^5] & "\n" & "\n")
+    let moduleName: string = replacef(file, re"modules/*([a-zA-Z0-9]*).nim$", "$1")
+    MODULES.add( moduleName )
+    importFile.write("MODULES.add(\"" & moduleName & "\")\n")
+    importFile.write("import " & file[0..^5] & "\n\n")
+
   importFile.close
 
   ## create: install file
   for module in MODULES:
-    installContent = "discard " & module & ".install({" & argumentString & "}.toTable)"
-    echo "Will add to installModules.nim: " & installContent
+    ## TODO replace table with DotfileModuleAttributes 
+    # e.g.: DotfileModuleAttributes( user: USER, path: PATH, home: HOME, pwd: PWD )
+    installContent = "discard " & module & ".install(DotfileModuleAttributes(" & argumentString & "))"
+    if DEBUG: 
+      echo "Will add to installModules.nim: " & installContent
     installFile.write( installContent & "\n" )
 
   installFile.close
