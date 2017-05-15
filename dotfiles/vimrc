@@ -52,11 +52,13 @@ let g:airline#extensions#tabline#enabled = 1
 " Custom IDE Settings
 set nocp
 set nocompatible
-set hidden
 set number
 set tabstop=4
 set shiftwidth=4
 set expandtab
+set hidden
+syn on
+
 
 " Python Settings
 autocmd Filetype python set tabstop=4
