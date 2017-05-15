@@ -47,7 +47,7 @@ proc install*( vars: DotfileModuleAttributes ): bool =
       break createSSHServer_config
 
     # check port
-    let sshPort = execCommand("cat /etc/ssh/sshd_config | grep Port | cut -d ' ' -f 2", user = USER, wantResult = true )
+    let sshPort = execCommand("""cat /etc/ssh/sshd_config | grep Port | cut -d " " -f 2""", user = USER, wantResult = true )
     
     if DEBUG:
       echo "Found SSH-Configuration for Port: " & sshPort
