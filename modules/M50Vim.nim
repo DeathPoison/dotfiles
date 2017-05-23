@@ -12,7 +12,8 @@
 ]#
 
 from os       import fileExists, dirExists, sleep
-from re       import re, contains, escapeRe
+#from re       import re, contains, escapeRe
+import re
 
 from threadpool import spawn, sync
 

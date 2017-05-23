@@ -5,6 +5,9 @@
 #  Module to install Nim
 #  ! nim only work if you use my .bash_alias file! ~ will be installed with installer.module.M05Dotfiles
 #
+#  v0.2  - 23.05.2017 - 21:00
+#        - added smarter/simpler way to install nimble through koch
+#
 #  v0.1  - 14.05.2017 - 01:00
 #        - first Version
 #
@@ -16,7 +19,6 @@ echo "--------------------------------------------------------------------------
 CURRENT_DIR=`pwd`
 DIR_GIT=$HOME"/git/EXTERNAL"
 DIR_NIM=$DIR_GIT"/Nim" # Nim/ # bin/nim
-DIR_NIMBLE=$DIR_GIT"/nimble" # nimble
 
 echo "Want to install/update Nim? [y/N]"
 read userinput
@@ -44,31 +46,10 @@ if [ "$userinput" == "y" ] || [ "$userinput" == "Y" ]; then
   bin/nim c koch 1>/dev/null
   ./koch boot -d:release 1>/dev/null
 
-fi
+  # install nimble
+  ./koch nimble 1>/dev/null
 
-## Need to make sure nim is available
-source $DIR_GIT"/dotfiles/dotfiles/bash_aliases"
-
-## NIMBLE
-if type nimble; then
-  nimble update
-else
-  echo "Want to install/update Nimble? [y/N]"
-  read userinput
-  if [ "$userinput" == "y" ] || [ "$userinput" == "Y" ]; then
-    if [ -d $DIR_NIMBLE ]; then
-      nim_already_installed=true
-      cd $DIR_NIMBLE
-      git pull
-    else
-      cd $DIR_GIT
-      git clone git clone https://github.com/nim-lang/nimble.git $DIR_NIMBLE
-    fi
-
-    cd $DIR_NIMBLE 
-    nim -d:release c -r src/nimble 1>/dev/null
-    src/nimble install 1>/dev/null
-  fi
+  echo "need to add path"
 fi
 
 ## EXIT

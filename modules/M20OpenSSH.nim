@@ -60,7 +60,7 @@ proc install*( vars: DotfileModuleAttributes ): bool =
       if not askUser( "Set SSH-Port to 50505", defaultChoice = true ):
         break createSSHServer_config
 
-    discard execCommand( "sed -i 's/Port 22$/Port 50505/' /etc/ssh/sshd_config", user = "root" )
+    discard execCommand( """sed -i "s/Port 22$/Port 50505/" /etc/ssh/sshd_config""", user = "root" )
     ## TODO need to restart ssh server... is called ssh, sshd, openssh?!?!?
     ## TODO need to check this first!!!
     if DEBUG:

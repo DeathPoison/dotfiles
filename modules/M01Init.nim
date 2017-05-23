@@ -15,7 +15,8 @@
 ## TODO clean this imports xD
 from os       import fileExists, dirExists
 from tables   import `[]`, Table, toTable, keys
-from re       import re, contains, escapeRe
+#from re       import re, contains, escapeRe
+import re
 
 from "../libraries/arnold/arnold"       
 import execCommand, checkCommand

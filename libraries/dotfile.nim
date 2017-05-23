@@ -3,7 +3,8 @@ from net      import newSocket, connect, Port, close
 from rdstdin  import readPasswordFromStdin
 from posix    import getegid, onSignal, SIGINT, SIGTERM
 from tables   import toTable, keys, `[]`
-from re       import re, contains, escapeRe
+#from re       import re, contains, escapeRe
+import re
 
 from threadpool import spawn, sync
 
@@ -36,10 +37,11 @@ type
     destination*: string
 
   DotfileModuleAttributes* = object
+    pwd*: string
     user*: string
     home*: string
     path*: string
-    pwd*: string
+    arch*: string
     force*: bool
     silent*: bool
 
@@ -150,7 +152,7 @@ proc installPackages*( packages: seq[ string ] ): bool =
 
 # get Processor Arch
 proc getArch*(): string =
-  result = execCommand( "lscpu | grep Archi | cut -d \":\" -f 2", user = "root", wantResult = true )
+  result = execCommand( """lscpu | grep Archi | cut -d ":" -f 2""", user = "root", wantResult = true )
   #try:
   #except CmdDoesNotExists:
   #  raise newException(WrongOS, "No suitable OS found...")

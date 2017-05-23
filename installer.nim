@@ -17,7 +17,7 @@ from threadpool import sync
 
 # custom error types
 from libraries.inception.inception 
-import WrongOS
+import WrongOS, CmdRaisesError
 
 # command executor
 from libraries.arnold.arnold       

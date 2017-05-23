@@ -33,12 +33,13 @@
 ]#
 
 from os       import fileExists, dirExists, sleep
-from re       import re, contains, escapeRe
+#from re       import re, contains, escapeRe
+import re
 from threadpool import sync
 
 # command executor
 from "../libraries/arnold/arnold"       
-import execCommand, checkCommand, startCommand, isActive
+import execCommand, runCommand, checkCommand, startCommand, isActive
 
 ## import dotfiles helper
 from "../libraries/dotfile"
@@ -79,6 +80,7 @@ proc install*( vars: DotfileModuleAttributes ): bool =
   # include vars like: HOME, USER, ...
   include "../buildEnvironment.nim"
 
+
   let mPadPath: string = HOME & r"/git/EXTERNAL/mpad"
   let mPadGitCommand: string = r"git clone " & mPadUrl & " " & mPadPath & " 2>/dev/null"
 
@@ -111,24 +113,40 @@ proc install*( vars: DotfileModuleAttributes ): bool =
     
     spinner.stopSpinner()   # stop spinnerThread
     sync()                  # make sure threads are finished @spinner, arnold
-    #discard execCommand( mPadGitCommand, user = USER )
+    #discard runCommand( mPadGitCommand, user = USER )
+
+  ## make sure home/bin exists
+  let homeBin: string = HOME & r"/bin"
+  if not dirExists( homeBin ):
+    discard runCommand( "mkdir " & homeBin, user = USER )
 
   ## make sure ~/bin dir exists and is in PATH
-  if not PATH.contains( re escapeRe( HOME & r"/bin" ) ):
+  if not PATH.contains( re escapeRe( homeBin ) ):
+    ## TODO need to make sure this wont be added twice
+    echo "check bashrc end for export path!"
     if DEBUG:
       echo "add " & HOME & "/bin to $PATH"
-    discard execCommand( """echo "export PATH=$PATH:""" & HOME & "/bin\" >> " & HOME & "/.bashrc", user = USER )
+    discard runCommand( """echo "export PATH=\$PATH:""" & HOME & "/bin\" >> " & HOME & "/.bashrc", user = USER )
   else:
     echo HOME & "/bin found in PATH"
 
   ## build mpad
   if needmPad:
-    discard execCommand( "cd " & mPadPath & " && yarn", user = USER )
-    discard execCommand( "cd " & mPadPath & " && yarn run build", user = USER )
+    discard runCommand( "cd " & mPadPath & " && yarn", user = USER )
+    discard runCommand( "cd " & mPadPath & " && yarn run build", user = USER )
   
+  ## TODO
+  var mPadDist: string
+  case ARCH
+  of "i686":
+    mpadDist = "/mPad-linux-ia32"
+  else:
+    mpadDist = "/mPad-linux-x64"
+
   ## create symlink to ~/bin
   if not fileExists( HOME & "/bin/mpad" ):
-    discard execCommand( "ln -s " & mPadPath & "/mPad-linux-x64/mPad " & HOME & "/bin/mpad", user = USER )
+    discard runCommand( "ln -s " & mPadPath & mpadDist & "/mPad " & HOME & "/bin/mpad", user = USER )
+  # execCommand
 
   ## create desktop link
   if not fileExists( mPadPathShortcut ):
@@ -144,6 +162,9 @@ when isMainModule:
     user: USER,
     path: PATH,
     home: HOME,
-    pwd:  PWD
+    pwd:  PWD,
+    arch: ARCH
   ))
+
+  echo "PATH=$PATH:$HOME/git/EXTERNAL/Nim/bin/"
 

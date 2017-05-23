@@ -11,6 +11,7 @@ except:
 
 let USER   = vars.user ## vars["USER"]
 let HOME   = vars.home ## vars["HOME"]
+let ARCH   = vars.arch ## vars["ARCH"]
 let PATH   = vars.path ## vars["PATH"]
 let PWD    = vars.pwd ## vars["PWD"]
 let FORCE  = vars.force ## vars["FORCE"]

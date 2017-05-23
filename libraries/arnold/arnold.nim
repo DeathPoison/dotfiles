@@ -13,7 +13,8 @@
 
 ## TODO make install procedure async/parrallel
 
-from re         import replace, re
+#from re         import replace, re
+import re
 from os         import fileExists, dirExists, sleep
 from osproc     import execCmdEx, execCmd
 from posix      import onSignal, SIGINT, SIGTERM
@@ -42,7 +43,6 @@ proc checkFile*( inputfile: string, isDir: bool = false ): bool =
     return dirExists( inputfile )
   else:
     return fileExists( inputfile )
-
 
 #[ executes Command directly and optionally returns the result ]#
 proc execCommand*( 
@@ -108,6 +108,33 @@ proc execCommand*(
     discard exitCode
 
   # return "empty"
+
+proc runCommand*( 
+  command: string, 
+  user: string = "root", 
+  wantResult: bool = false, 
+  group: string = "", 
+  spawed: bool = false, 
+  needEnviroment: bool = false,
+  raw: bool = false
+): bool =
+
+  result = false
+  try:
+    discard execCommand( 
+      command = command, 
+      user = user, 
+      wantResult = wantResult, 
+      group = group, 
+      spawed = spawed, 
+      needEnviroment = needEnviroment,
+      raw = raw
+    )
+    result = true
+  except CmdRaisesError:
+    if DEBUG:
+      echo getCurrentExceptionMsg()
+    result = false
 
 #[
   probably nim has a bug here, 
