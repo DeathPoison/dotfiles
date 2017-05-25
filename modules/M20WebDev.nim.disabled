@@ -21,6 +21,14 @@ proc install*( vars: DotfileModuleAttributes ): bool =
   echo "# Going to install Web - Developer Tools."
   echo "--------------------------------------------------"
 
+  ## need:
+  ## sublime with plugins
+  ## vagrant and virtualbox ~ newest version from website....
+  ## node npm and yarn for JS development
+  ## possibly electron ~ but not nessecary, will be installed with package.js
+  ## web-server ~ not sure if i need s.th. like this anymore... ~ probably i need to create a vagrant box with my html git repository cloned into
+  ## newest version of firefox ~ but excluded to a single module
+
   ## TODO install nodejs https://askubuntu.com/questions/426750/how-can-i-update-my-nodejs-to-the-latest-version
   ## TODO install yarn
   ## TODO added test db with pass l4r4v3l https://www.digitalocean.com/community/tutorials/how-to-create-a-new-user-and-grant-permissions-in-mysql

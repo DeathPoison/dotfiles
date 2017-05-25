@@ -3,6 +3,9 @@
 
   Module to simplify the module creation process
 
+  v0.2  - 25.05.2017 - 14:30
+        - added dependencies
+
   v0.1  - 13.05.2017 - 16:30
         - added this Module
 ]#
@@ -10,18 +13,37 @@
 ## import dotfiles helper
 from os import fileExists
 from rdstdin  import readPasswordFromStdin
-from "../libraries/dotfile" import DotfileModuleAttributes, askUser, installPackage
+from "../libraries/dotfile" import askUser
 
 from "../libraries/arnold/arnold"       
-import execCommand, checkCommand
+import execCommand, checkCommand, installPackage
+
+from "../libraries/dotfile" import checkDependencies
+from "../libraries/dotfileTypes"
+import DotfileObj, DotfileModuleAttributes, Dependencies, Dependencie, command, directory
 
 
+## define your dependencies
+let deps: Dependencies = Dependencies(
+  module: "OpenSSH",
+  dependencies: @[
+    Dependencie( 
+      name: "xclip", description: "xClip using Clipboard from CLI", 
+      kind: command,  command: "xclip" 
+    ),
+  ]
+)
 let DEBUG = true ## TODO use asyncLogger
+
 
 proc install*( vars: DotfileModuleAttributes ): bool =
 
   # include vars like: HOME, USER, ...
   include "../buildEnvironment.nim"
+
+  if not checkDependencies( deps, vars ):
+    return false
+
 
   echo "--------------------------------------------------"
   echo "# Going to install an OpenSSH Server."
@@ -71,11 +93,6 @@ proc install*( vars: DotfileModuleAttributes ): bool =
       break createSSHServer_cert
 
     if not askUser( "You have no SSH-Key create any? (Type=RSA)", defaultChoice = false ):
-      break createSSHServer_cert
-
-    if not checkCommand( "xclip", user = USER ):
-      ## TODO add exit procedure
-      echo "How could this happen? XClip is not installed... rerun this script, install admin packages!"
       break createSSHServer_cert
 
     var possiblePassword: string = readPasswordFromStdin("Possibly a password: ")

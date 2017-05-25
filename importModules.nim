@@ -10,15 +10,6 @@ import modules/M20Git
 MODULES.add("M20OpenSSH")
 import modules/M20OpenSSH
 
-MODULES.add("M20WebDev")
-import modules/M20WebDev
-
-MODULES.add("M50Terminology")
-import modules/M50Terminology
-
-MODULES.add("M50Themes")
-import modules/M50Themes
-
 MODULES.add("M50Vim")
 import modules/M50Vim
 

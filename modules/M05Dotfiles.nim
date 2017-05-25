@@ -3,6 +3,9 @@
 
   Module to install Dotfiles for Debian Based Systems
   This file really does ;)
+  
+  v0.2  - 25.05.2017 - 14:30
+        - added dependencies
 
   v0.1  - 13.05.2017 - 15:13 
         - working
@@ -15,10 +18,14 @@ from tables   import `[]`, Table
 
 ## import dotfiles helper
 from "../libraries/dotfile"
-import askUser, copy, DotfileObj, DotfileModuleAttributes
+import askUser, copy
 
 from "../libraries/arnold/arnold"       
 import execCommand, checkCommand, validCommand
+
+from "../libraries/dotfile" import checkDependencies
+from "../libraries/dotfileTypes"
+import DotfileObj, DotfileModuleAttributes, Dependencies, Dependencie, command, directory
 
 
 ## TODO use asyncLogger
@@ -29,6 +36,24 @@ proc install*( vars: DotfileModuleAttributes ): bool =
   # include vars like: HOME, USER, ...
   include "../buildEnvironment.nim"
 
+  ## define your dependencies
+  let deps: Dependencies = Dependencies(
+    module: "dotfiles",
+    dependencies: @[
+      Dependencie( 
+        name: "home/git", description: "Home git Directory, which is used for my git server", 
+        kind: directory,  path: HOME & "/git" 
+      ),
+      Dependencie( 
+        name: "home/git/EXTERNAL", description: "Home git/EXTERNAL Directory, which is used for github", 
+        kind: directory,  path: HOME & "/git/EXTERNAL" 
+      ),
+    ]
+  )
+  if not checkDependencies( deps, vars ):
+    return false
+
+
   echo "--------------------------------------------------"
   echo "# Going to install Dotfiles Packages."
   echo "--------------------------------------------------"
@@ -38,20 +63,10 @@ proc install*( vars: DotfileModuleAttributes ): bool =
     echo "No " & HOME & r"/.bashrc" & "found... skip installation of Dotfiles..." 
     quit()
 
-
-  block createGitDir:
-    # create $HOME/git 
-    if not dirExists( HOME & r"/git" ):
-      discard execCommand( "mkdir " & HOME & r"/git 2>/dev/null", user = USER ) 
-    
-    # create $HOME/git/EXTERNAL
-    if not dirExists( HOME & r"/git/EXTERNAL" ):
-      discard execCommand( "mkdir " & HOME & r"/git/EXTERNAL 2>/dev/null", user = USER ) 
-
-    # install fonts 
-    if not dirExists( HOME & r"/git/EXTERNAL/fonts" ):
-      discard execCommand( r"git clone https://github.com/powerline/fonts.git " & HOME & r"/git/EXTERNAL/fonts 2>/dev/null", user = USER )
-      discard execCommand( "cd " & HOME & r"/git/EXTERNAL/fonts && fc-cache -f -v 1>/dev/null", user = USER )
+  # install fonts 
+  if not dirExists( HOME & r"/git/EXTERNAL/fonts" ):
+    discard execCommand( r"git clone https://github.com/powerline/fonts.git " & HOME & r"/git/EXTERNAL/fonts 2>/dev/null", user = USER )
+    discard execCommand( "cd " & HOME & r"/git/EXTERNAL/fonts && fc-cache -f -v 1>/dev/null", user = USER )
 
   block createBashAliasConnection:
 

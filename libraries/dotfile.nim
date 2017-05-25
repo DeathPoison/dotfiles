@@ -1,8 +1,26 @@
+#[
+
+  Dotfile Lib
+
+  just a little helper for my installer script and his modules
+
+  v0.2 - 25.05.2017 - 14:30
+       - moved installPackage and installPackages to arnold
+       - excluded types for reuse
+       - added philanthrop ~ checkDependencies
+
+  v0.1 - init version
+
+]#
+
+
 from os       import fileExists, dirExists, sleep, commandLineParams, getCurrentDir
 from net      import newSocket, connect, Port, close
 from rdstdin  import readPasswordFromStdin
 from posix    import getegid, onSignal, SIGINT, SIGTERM
 from tables   import toTable, keys, `[]`
+
+from strutils import join
 #from re       import re, contains, escapeRe
 import re
 
@@ -17,7 +35,7 @@ from arnold.arnold
 import execCommand, setOwner, validCommand, checkCommand, checkFile
 
 from arnold.arnold       
-import startCommand, spawnCommand, isActive
+import startCommand, spawnCommand, isActive, installPackage, installPackages
 
 from inception.inception 
 import CmdDoesNotExists, CmdRaisesError
@@ -26,24 +44,12 @@ import CmdDoesNotExists, CmdRaisesError
 from spinner.spinner     
 import Spinner, startSpinner, stopSpinner
 
+## philanthrop, helps with all kinds of problems
+from philanthrop
+import tryToFix
 
-type
-  # Container for files being used by this app
-  DotfileObj* = object           ## With the creation of a referenze
-    name*: string
-    isDir*: bool                 ## this object transforms into a
-    overwrite*: bool
-    target*: string              ## immutable procedure, dont need it now!
-    destination*: string
-
-  DotfileModuleAttributes* = object
-    pwd*: string
-    user*: string
-    home*: string
-    path*: string
-    arch*: string
-    force*: bool
-    silent*: bool
+from dotfileTypes 
+import DotfileObj, DotfileModuleAttributes,  DependencieType, Dependencie, Dependencies
 
 var DEBUG: bool = false
 let HELP: string = """
@@ -130,26 +136,6 @@ proc copy*(
 
   return true
 
-proc installPackage*( package: string ): bool =
-  ## HINT install must be quiet!
-  ## TODO add error handling here
-  result = true
-  if not checkCommand( package ):
-    discard execCommand( "apt install -y " & package, user = "root" )
-    HISTORY.add( "Installed package: " & package )  
-    result = checkCommand( package )
-
-proc installPackages*( packages: seq[ string ] ): bool =
-  ## TODO remove this misuse of exceptions here!!!
-  try:
-    for package in packages:
-      if not installPackage( package ):
-        raise newException( CantInstallPackage, "Cant install package: " & package );
-  except CantInstallPackage:
-    echo getCurrentExceptionMsg()
-    return false
-  return true
-
 # get Processor Arch
 proc getArch*(): string =
   result = execCommand( """lscpu | grep Archi | cut -d ":" -f 2""", user = "root", wantResult = true )
@@ -176,6 +162,52 @@ proc checkServer*( host: string, port: Port = Port(80) ): bool =
   except Exception:
     discard socket
     result = false
+
+
+#### add module tools:
+proc checkDependencies*( dependencies: Dependencies, vars: DotfileModuleAttributes ): bool =
+  var currentDep: Dependencie
+  
+  echo "checking requirements"
+  result = false
+
+  block checkDep:
+    for dep in dependencies.dependencies:
+      currentDep = dep
+      echo "go'in to check: ", dep
+
+      case dep.kind
+      of command, service:
+        var args: string = ""
+        if dep.arguments.len >= 1:
+          args = join( dep.arguments, " " )
+        let cmd: string = dep.command & " " & args 
+
+        ## order is important here!
+        if not checkCommand( cmd ) and not tryToFix( dep, vars ):
+          break checkDep
+
+      of file:
+        if not fileExists( dep.path ) and not tryToFix( dep, vars ):
+          break checkDep
+
+      of directory:
+        if not dirExists( dep.path ) and not tryToFix( dep, vars ):
+          break checkDep
+
+      else: # dir or file
+        break checkDep
+
+    result = true
+      
+  if not result:
+    case currentDep.kind
+    of command, service:
+      echo "cant find command:", currentDep.command
+    of directory,file:
+      echo "cant find file/dir:", currentDep.path
+    else: # dir or file
+      echo "dependencie type not found :( :", currentDep.kind
 
 
 when isMainModule:

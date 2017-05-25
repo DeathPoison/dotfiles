@@ -25,7 +25,10 @@ import execCommand, checkCommand
 
 ## import dotfiles helper
 from libraries.dotfile
-import askUser, checkRoot, getArch, getDistribution, checkServer, DotfileModuleAttributes
+import askUser, checkRoot, getArch, getDistribution, checkServer
+
+from libraries.dotfileTypes
+import DotfileModuleAttributes
 
 
 var DEBUG: bool = false

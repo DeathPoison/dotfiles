@@ -3,20 +3,44 @@
 
   Module to install Git
 
+  v0.2  - 25.05.2017 - 14:30
+        - added dependencies
+
   v0.1  - 13.05.2017 - 15:00
         - added a simple base Module
 ]#
 
 ## import dotfiles helper
-from "../libraries/dotfile" import DotfileModuleAttributes, askUser
+from "../libraries/dotfile" import askUser
 
 from "../libraries/arnold/arnold"       
 import execCommand, checkCommand
+
+from "../libraries/dotfile" import checkDependencies
+from "../libraries/dotfileTypes"
+import DotfileObj, DotfileModuleAttributes, Dependencies, Dependencie, command, directory
+
+
+## define your dependencies
+let deps: Dependencies = Dependencies(
+  module: "dotfiles",
+  dependencies: @[
+    Dependencie( 
+      name: "git", description: "Git Version Control System", 
+      kind: command,  command: "git" 
+    ),
+  ]
+)
+
 
 proc install*( vars: DotfileModuleAttributes ): bool =
 
   # include vars like: HOME, USER, ...
   include "../buildEnvironment.nim"
+
+  if not checkDependencies( deps, vars ):
+    return false
+
 
   echo "--------------------------------------------------"
   echo "# Going to configure Github for you."

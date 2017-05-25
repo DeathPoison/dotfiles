@@ -3,6 +3,10 @@
 
   Module to install mPad for Debian Based Systems
 
+  v0.5  - 25.05.2017 - 11:11
+        - added dependencies
+        - moved creation of dependencies to philanthrop
+
   v0.4  - 13.05.2017 - 23:15
         - fully working and tested!
 
@@ -32,25 +36,27 @@
         - the module import does not even exist...
 ]#
 
-from os       import fileExists, dirExists, sleep
-#from re       import re, contains, escapeRe
-import re
 from threadpool import sync
+from os         import fileExists, dirExists, sleep
 
-# command executor
+# Handle: running commands, check status
 from "../libraries/arnold/arnold"       
-import execCommand, runCommand, checkCommand, startCommand, isActive
+import runCommand, checkCommand, startCommand, isActive
 
-## import dotfiles helper
+# Handle: UserInput
 from "../libraries/dotfile"
-import askUser, DotfileModuleAttributes
+import askUser
 
-# cli loading spinners
-from "../libraries/spinner/spinner"     
+# Handle: Dependencies
+from "../libraries/dotfile" import checkDependencies
+from "../libraries/dotfileTypes"
+import DotfileModuleAttributes, Dependencies, Dependencie, command, directory
+
+# Handle: Loading Spinners
+from "../libraries/spinner/spinner"
 import Spinner, startSpinner, stopSpinner
 
-
-let DEBUG = true ## TODO use asyncLogger
+## Define shortcut content here ~ possibly export this content to an external file
 let shortcut: string = """
 [Desktop Entry]
 Name=mPad
@@ -62,6 +68,27 @@ StartupNotify=true
 Terminal=false
 Categories=Editor;Markdown;Text;Electron;Vue;Webkit;
 """
+let deps: Dependencies = Dependencies(
+  module: "mPad",
+  dependencies: @[
+    Dependencie( 
+      name: "NodeJS",   description: "Node JS - Javascript Engine", 
+      command: "node",  kind: command 
+    ),
+    Dependencie( 
+      name: "NPM",      description: "Node Package Manager", 
+      command: "npm",   kind: command 
+    ),
+    Dependencie( 
+      name: "Yarn",     description: "Node Package Installer", 
+      command: "yarn",  kind: command  # , arguments: @[] 
+    ),
+    Dependencie( 
+      name: "home/bin", description: "Home Bin Directory, which is linked to PATH", 
+      kind: directory,  path: "/home/poisonweed/bin" 
+    ),
+  ]
+)
 let sp = Spinner( 
   spinner: "clock", 
   progressLabel: "Installing:",
@@ -71,24 +98,26 @@ let sp = Spinner(
   defaultDelay: 75, 
   stream: stdout 
 )
-let mPadUrl: string = "https://github.com/DeathPoison/mpad.git"
-let mPadPathShortcut: string = "/usr/share/applications/mpad.desktop"
+
+let DEBUG:    bool = true ## TODO use asyncLogger
 var needmPad: bool = false
+
+var mPadDist: string = "/mPad-linux-x64"
+let mPadUrl:  string = "https://github.com/DeathPoison/mpad.git"
+
+let mPadPathShortcut: string = "/usr/share/applications/mpad.desktop"
+
 
 proc install*( vars: DotfileModuleAttributes ): bool =
 
   # include vars like: HOME, USER, ...
   include "../buildEnvironment.nim"
 
+  if not checkDependencies( deps, vars ):
+    return false
 
   let mPadPath: string = HOME & r"/git/EXTERNAL/mpad"
-  let mPadGitCommand: string = r"git clone " & mPadUrl & " " & mPadPath & " 2>/dev/null"
-
-  # make sure yarn is installed
-  if not checkCommand( "yarn", user = USER ):
-    if DEBUG:
-      echo "need yarn to build mPad!"
-    return false
+  let mPadGitCommand:   string = r"git clone " & mPadUrl & " " & mPadPath & " 2>/dev/null"
 
   if checkCommand( "mpad", user = USER ):
     return true
@@ -96,8 +125,6 @@ proc install*( vars: DotfileModuleAttributes ): bool =
   echo "--------------------------------------------------"
   echo "# Going to install an mpad."
   echo "--------------------------------------------------"
-
-  echo "NOT READY YET!!!"
 
   if not askUser( "Want to install mpad?", defaultChoice = true ):
     return false
@@ -113,40 +140,24 @@ proc install*( vars: DotfileModuleAttributes ): bool =
     
     spinner.stopSpinner()   # stop spinnerThread
     sync()                  # make sure threads are finished @spinner, arnold
-    #discard runCommand( mPadGitCommand, user = USER )
-
-  ## make sure home/bin exists
-  let homeBin: string = HOME & r"/bin"
-  if not dirExists( homeBin ):
-    discard runCommand( "mkdir " & homeBin, user = USER )
-
-  ## make sure ~/bin dir exists and is in PATH
-  if not PATH.contains( re escapeRe( homeBin ) ):
-    ## TODO need to make sure this wont be added twice
-    echo "check bashrc end for export path!"
-    if DEBUG:
-      echo "add " & HOME & "/bin to $PATH"
-    discard runCommand( """echo "export PATH=\$PATH:""" & HOME & "/bin\" >> " & HOME & "/.bashrc", user = USER )
-  else:
-    echo HOME & "/bin found in PATH"
 
   ## build mpad
   if needmPad:
     discard runCommand( "cd " & mPadPath & " && yarn", user = USER )
     discard runCommand( "cd " & mPadPath & " && yarn run build", user = USER )
   
-  ## TODO
-  var mPadDist: string
+  ## TODO add x86, check an vm or similar to get ARCH string
+  ## PS: Let's be clear, no MS Windows is supported!
   case ARCH
-  of "i686":
+  of "i686", "x86":
     mpadDist = "/mPad-linux-ia32"
-  else:
-    mpadDist = "/mPad-linux-x64"
+  of "x64", "x86_64":
+    mPadDist = "/mPad-linux-x64"
+  else: discard 
 
   ## create symlink to ~/bin
   if not fileExists( HOME & "/bin/mpad" ):
     discard runCommand( "ln -s " & mPadPath & mpadDist & "/mPad " & HOME & "/bin/mpad", user = USER )
-  # execCommand
 
   ## create desktop link
   if not fileExists( mPadPathShortcut ):
@@ -165,6 +176,3 @@ when isMainModule:
     pwd:  PWD,
     arch: ARCH
   ))
-
-  echo "PATH=$PATH:$HOME/git/EXTERNAL/Nim/bin/"
-

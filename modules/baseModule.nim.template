@@ -10,10 +10,27 @@
 ## import dotfiles helper
 from "../libraries/dotfile" import DotfileModuleAttributes
 
+from "../libraries/dotfileTypes"
+import DotfileModuleAttributes, Dependencies, Dependencie, command, directory
+
+
 proc install*( vars: DotfileModuleAttributes ): bool =
 
   # include vars like: HOME, USER, ...
   include "../buildEnvironment.nim"
+
+  ## define your dependencies
+  let deps: Dependencies = Dependencies(
+    module: "baseModule",
+    dependencies: @[
+      Dependencie( 
+        name: "home/bin", description: "Home Bin Directory, which is linked to PATH", 
+        kind: directory,  path: HOME & "/bin" 
+      ),
+    ]
+  )
+  if not checkDependencies( deps, vars ):
+    return false
 
   echo "--------------------------------------------------"
   echo "# Going to install a Base Module."

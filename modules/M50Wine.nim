@@ -8,7 +8,8 @@
 ]#
 
 ## import dotfiles helper
-from "../libraries/dotfile" import DotfileModuleAttributes, askUser
+from "../libraries/dotfile" import askUser
+from "../libraries/dotfileTypes" import DotfileModuleAttributes
 
 # command executor
 from "../libraries/arnold/arnold"       

@@ -49,7 +49,8 @@ if [ "$userinput" == "y" ] || [ "$userinput" == "Y" ]; then
   # install nimble
   ./koch nimble 1>/dev/null
 
-  echo "need to add path"
+  echo "need to add path, permanently"
+  PATH=$PATH:$HOME/git/EXTERNAL/Nim/bin/
 fi
 
 ## EXIT

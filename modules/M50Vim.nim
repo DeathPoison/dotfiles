@@ -30,43 +30,58 @@ import Spinner, startSpinner, stopSpinner
 
 ## import dotfiles helper
 from "../libraries/dotfile"
-import askUser, DotfileModuleAttributes
+import askUser
+
+from "../libraries/dotfile" import checkDependencies
+from "../libraries/dotfileTypes"
+import DotfileObj, DotfileModuleAttributes, Dependencies, Dependencie, command, directory
 
 
+## define your dependencies
+let deps: Dependencies = Dependencies(
+  module: "Vim",
+  dependencies: @[
+    Dependencie( 
+      name: "vim", description: "VIM Improved Version of VI ~ a CLI-Based Text Editor", 
+      kind: command,  command: "vim" 
+    ),
+  ]
+)
+
+let sp = Spinner( 
+  spinner: "clock", 
+  progressLabel: "Installing:",
+  progressText: "VIM-Plugins: ctrlp, nerdtree, some more...",
+  doneText: "DONE!", 
+  abortText: "Stopped", 
+  defaultDelay: 75, 
+  stream: stdout 
+)
 let DEBUG = true ## TODO use asyncLogger
+
 
 proc install*( vars: DotfileModuleAttributes ): bool =
 
   # include vars like: HOME, USER, ...
   include "../buildEnvironment.nim"
 
+  if not checkDependencies( deps, vars ):
+    return false
+
   echo "--------------------------------------------------"
   echo "# Going to install an VIM with Plugins."
   echo "--------------------------------------------------"
 
-  let sp = Spinner( 
-    spinner: "clock", 
-    progressLabel: "Installing:",
-    progressText: "VIM-Plugins: ctrlp, nerdtree, some more...",
-    doneText: "DONE!", 
-    abortText: "Stopped", 
-    defaultDelay: 75, 
-    stream: stdout 
-  )
+  stdout.write "Installing VIM-Plugins: "
+  startCommand( "vim +PluginInstall +qall", user = USER )
+  spinner.spawnSpinner sp
 
-  ## TODO set owner of ~/.vim dir
-  if checkCommand( "vim", user = USER ):
-    stdout.write "Installing VIM-Plugins: "
+  while isActive():       # while command is running: wait!  ~ could do sync here, but... this way iam able to include dirty hacks like set position after spinner and display some text there... iam not going to do this!!!
+    sleep( 200 )
+  
+  spinner.stopSpinner()   # stop spinnerThread
+  sync()                  # make sure threads are finished @spinner, arnold
 
-    startCommand( "vim +PluginInstall +qall", user = USER )
-    ## TODO move spawn to startSpinner proc! - dont want this spawn sync fu in my application
-    spinner.spawnSpinner sp
-
-    while isActive():       # while command is running: wait!  ~ could do sync here, but... this way iam able to include dirty hacks like set position after spinner and display some text there... iam not going to do this!!!
-      sleep( 200 )
-    
-    spinner.stopSpinner()   # stop spinnerThread
-    sync()                  # make sure threads are finished @spinner, arnold
 
 
 when isMainModule:

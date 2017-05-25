@@ -5,13 +5,14 @@
   Just executes System Commands - unix only?
   just a little helper for my install "script"
 
+  v0.3 - 25.05.2017 - 14:30
+       - added installPackage and installPackages
+
   v0.2 - added user spezific execution
 
   v0.1 - splittet from installer script
 
 ]#
-
-## TODO make install procedure async/parrallel
 
 #from re         import replace, re
 import re
@@ -266,6 +267,28 @@ onSignal( SIGINT, SIGTERM ):
   quit(130)
 
 
+##### INSTALLER, possibly exclude to diffrent file...
+proc installPackage*( package: string ): bool =
+  ## HINT install must be quiet!
+  ## TODO add error handling here
+  result = true
+  if not checkCommand( package ):
+    echo "need to add spinners to this installation!"
+    ## TODO add spinners here!
+    discard execCommand( "apt install -y " & package, user = "root" )
+    #HISTORY.add( "Installed package: " & package )  
+    result = checkCommand( package )
+
+proc installPackages*( packages: seq[ string ] ): bool =
+  ## TODO remove this misuse of exceptions here!!!
+  try:
+    for package in packages:
+      if not installPackage( package ):
+        raise newException( CantInstallPackage, "Cant install package: " & package );
+  except CantInstallPackage:
+    echo getCurrentExceptionMsg()
+    return false
+  return true
 
 
 ######## only littl helper for testing
