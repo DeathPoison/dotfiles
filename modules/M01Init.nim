@@ -17,7 +17,7 @@
 
 from tables   import `[]`, Table, toTable, keys
 
-from "../libraries/arnold/arnold"       import installPackages
+from "../libraries/arnold/arnold"       import installPackages, execCommand
 from "../libraries/inception/inception" import CantInstallPackage
 from "../libraries/dotfileTypes"        import DotfileModuleAttributes
 
@@ -67,10 +67,17 @@ proc install*( vars: DotfileModuleAttributes ): bool =
     echo "# Going to install " & package_group & " Packages."
     echo "--------------------------------------------------"
 
+    ## enable universe repo for ubuntu
+    if DIST == "Ubuntu":
+      discard execCommand( "add-apt-repository universe" )
+
+    ## update repositories
+    discard execCommand( "apt update" )
+
     try:
       discard installPackages( packages[package_group] )
     except CantInstallPackage:
-      # TODO prevent to stop here!
+      # TODO cant fetch error here! - need to be done inside of installPackages
       echo getCurrentExceptionMsg()
 
 

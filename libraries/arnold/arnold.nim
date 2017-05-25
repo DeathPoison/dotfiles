@@ -271,12 +271,25 @@ onSignal( SIGINT, SIGTERM ):
 proc installPackage*( package: string ): bool =
   ## HINT install must be quiet!
   ## TODO add error handling here
+
+  var commandAlias = package
+
+  # list of ( real-name, alias )
+  let commandAliases: seq[(string, string)] = @[
+    ( "node",                   "nodejs-legacy" )
+  ]
+  
+  for alias in commandAliases:
+    if package == alias[0]:
+      commandAlias = alias[1]
+      break
+
   result = true
   if not checkCommand( package ):
     echo "need to add spinners to this installation!"
     ## TODO add spinners here!
-    discard execCommand( "apt install -y " & package, user = "root" )
-    #HISTORY.add( "Installed package: " & package )  
+    discard execCommand( "apt install -y " & commandAlias, user = "root" )
+    #HISTORY.add( "Installed package: " & commandAlias )  
     result = checkCommand( package )
 
 proc installPackages*( packages: seq[ string ] ): bool =

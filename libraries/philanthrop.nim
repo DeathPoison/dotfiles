@@ -96,7 +96,15 @@ proc tryToFix*( dependencie: Dependencie, vars: DotfileModuleAttributes ): bool 
     of directory:
       result = fixDirectory( PATH = PATH, USER = USER )
     of command:
-      result = installPackage( dependencie.command )
+      case dependencie.command
+      of "yarn":
+        if runCommand( "npm install -g yarn" ):
+          if not fileExists("/usr/bin/yarn"):
+            discard runCommand("ln -s /usr/local/bin/yarn /usr/bin/yarn")):
+          result = true
+
+      else: 
+        result = installPackage( dependencie.command )
     else: discard
 
   ## no fix found!
