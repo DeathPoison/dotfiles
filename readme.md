@@ -7,6 +7,16 @@
 # Author: LimeBlack ~ David Crimi - deathpoison.dc@gmail.com
 # StartDate: 31.08.2014
 #
+# v1.1   - 25.05.2017 - 20:00
+#        - added dependencie check for modules, with little error solver
+#        - excluded dotfile types
+#        - moved installpackage to arnold
+#        - improved package checking ~ arnold
+#        - added fixes for ubuntu universe repo
+#        - errorsolver is able to install node, npm and yarn... wrong place? -> i want to add modules as dependencie type
+#        - improved gitignore file
+#        - added DIST to module vars
+#
 # v1.0   - 14.05.2017 - 03:30
 #        - added runInstallation.sh
 #        - -> builds and run through the whole installation process

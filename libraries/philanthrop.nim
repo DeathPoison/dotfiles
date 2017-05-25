@@ -100,11 +100,12 @@ proc tryToFix*( dependencie: Dependencie, vars: DotfileModuleAttributes ): bool 
       of "yarn":
         if runCommand( "npm install -g yarn" ):
           if not fileExists("/usr/bin/yarn"):
-            discard runCommand("ln -s /usr/local/bin/yarn /usr/bin/yarn")):
+            discard runCommand("ln -s /usr/local/bin/yarn /usr/bin/yarn")
           result = true
-
       else: 
         result = installPackage( dependencie.command )
+    of package:
+        result = installPackage( dependencie.package )
     else: discard
 
   ## no fix found!

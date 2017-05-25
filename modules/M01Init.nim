@@ -61,6 +61,8 @@ let DEBUG = true ## TODO use asyncLogger
 
 proc install*( vars: DotfileModuleAttributes ): bool =
 
+  include "../buildEnvironment.nim"
+
   for package_group in packages.keys:
 
     echo "--------------------------------------------------"

@@ -11,7 +11,7 @@ when isMainModule:
 
   var MODULES: seq[ string ] = @[] # hold list of available modules
   
-  var argumentString: string = "user: USER, path: PATH, home: HOME, pwd: PWD, arch: ARCH, silent: SILENT, force: FORCE"
+  var argumentString: string = "user: USER, path: PATH, home: HOME, pwd: PWD, arch: ARCH, dist: DIST, silent: SILENT, force: FORCE"
   var installContent: string
 
   let importFile  = open("importModules.nim",  fmWrite)

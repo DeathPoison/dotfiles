@@ -50,7 +50,7 @@ import askUser
 # Handle: Dependencies
 from "../libraries/dotfile" import checkDependencies
 from "../libraries/dotfileTypes"
-import DotfileModuleAttributes, Dependencies, Dependencie, command, directory
+import DotfileModuleAttributes, Dependencies, Dependencie, command, directory, package
 
 # Handle: Loading Spinners
 from "../libraries/spinner/spinner"
@@ -87,6 +87,10 @@ let deps: Dependencies = Dependencies(
       name: "home/bin", description: "Home Bin Directory, which is linked to PATH", 
       kind: directory,  path: "/home/poisonweed/bin" 
     ),
+    Dependencie(
+      name: "libgconf2", description: "Configuration Database System for GNOME",
+      kind: package,     package: "libgconf2-dev"
+    )
   ]
 )
 let sp = Spinner( 

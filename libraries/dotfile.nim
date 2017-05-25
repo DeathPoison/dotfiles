@@ -195,6 +195,10 @@ proc checkDependencies*( dependencies: Dependencies, vars: DotfileModuleAttribut
         if not dirExists( dep.path ) and not tryToFix( dep, vars ):
           break checkDep
 
+      of package:
+        if not checkCommand( "apt install -s " & dep.package, isRaw = true ) and not tryToFix( dep, vars ):
+          break checkDep
+
       else: # dir or file
         break checkDep
 
@@ -206,6 +210,8 @@ proc checkDependencies*( dependencies: Dependencies, vars: DotfileModuleAttribut
       echo "cant find command:", currentDep.command
     of directory,file:
       echo "cant find file/dir:", currentDep.path
+    of package:
+      echo "cant install:", currentDep.package
     else: # dir or file
       echo "dependencie type not found :( :", currentDep.kind
 

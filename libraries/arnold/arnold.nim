@@ -285,12 +285,12 @@ proc installPackage*( package: string ): bool =
       break
 
   result = true
-  if not checkCommand( package ):
+  if not checkCommand( "apt install -s " & commandAlias, isRaw = true ):
     echo "need to add spinners to this installation!"
     ## TODO add spinners here!
     discard execCommand( "apt install -y " & commandAlias, user = "root" )
     #HISTORY.add( "Installed package: " & commandAlias )  
-    result = checkCommand( package )
+    result = checkCommand( "apt install -s " commandAlias, isRaw = true )
 
 proc installPackages*( packages: seq[ string ] ): bool =
   ## TODO remove this misuse of exceptions here!!!
