@@ -1,18 +1,22 @@
-#[
+##[
+ Library: Arnold
+ ------------------------
 
-  Arnold Lib - "Ich bin hier um zu lenken, nicht um zu denken!"
+  **"Ich bin hier um zu lenken, nicht um zu denken!"**
 
-  Just executes System Commands - unix only?
-  just a little helper for my install "script"
+ Just executes System Commands - unix only?
+ just a little helper for my install "script"
 
-  v0.3 - 25.05.2017 - 14:30
-       - added installPackage and installPackages
+ ::
+   v0.3 - 25.05.2017 - 14:30
+        - added installPackage and installPackages
 
-  v0.2 - added user spezific execution
+   v0.2 - added user spezific execution
 
-  v0.1 - splittet from installer script
+   v0.1 - splittet from installer script
 
-]#
+ :Author: **LimeBlack ~ David Crimi**
+]##
 
 #from re         import replace, re
 import re
@@ -34,18 +38,18 @@ var interrupted: bool = false
 ## TODO need to check source files, if not available the command will not executed!
 
 proc checkFile*( inputfile: string, isDir: bool = false ): bool =
+  ## Check if File/Dir exists
+  ##
+  ## TODO add check if target is dir or not... dont like this argument shit!
+
   if DEBUG:
     echo "Checking File: " & inputfile
-
-  ## TODO add check if target is dir or not... dont like this argument shit!
-  ## could just do both... but ugly
 
   if isDir:
     return dirExists( inputfile )
   else:
     return fileExists( inputfile )
 
-#[ executes Command directly and optionally returns the result ]#
 proc execCommand*( 
   command: string, 
   user: string = "root", 
@@ -55,32 +59,39 @@ proc execCommand*(
   needEnviroment: bool = false,
   raw: bool = false
 ): string = #  not nil
+  ##[
+    Executes given commands for given users
+
+     this proc will be used by other Command-Handlers
+
+    | raw - directly runs a command
+    | wantResult - returns the result
+    | needEnvironment - enables users environment
+  ]##
 
   var usableGroup: string = group 
   if group == "":
     usableGroup = user
-
-  ## TODO add user!
 
   if not spawed:
     shouldStop = false
   
   var commandBase = "su - " & user & " bash -c '"
   
-  ## add user enviroment to shell command
+  # add user enviroment to shell command
   if needEnviroment:
     commandBase = commandBase & "source ~/.profile;source ~/.bashrc;source ~/.bash_aliases;"
   
   if raw:
     commandBase = ""
 
-  ## su - poisonweed -c 'source ~/.profile;source ~/.bashrc;source ~/.bash_aliases; echo $PATH'
+  # su - poisonweed -c 'source ~/.profile;source ~/.bashrc;source ~/.bash_aliases; echo $PATH'
   var commandComplette = commandBase & command 
 
   if not raw:
     commandComplette = commandComplette & "'"
 
-    ## TODO HINT kill all errormessages here! -> should i pipe them in a log file?
+    # TODO HINT kill all errormessages here! -> should i pipe them in a log file?
     # if not wantResult:
     commandComplette = commandComplette & " 2>/dev/null"
 
@@ -93,12 +104,10 @@ proc execCommand*(
     shouldStop = true
 
   if exitCode >= 1:
-    if DEBUG:
-      echo output
+    if DEBUG: echo output
     raise newException( CmdRaisesError, intToStr(exitCode) )
 
   if wantResult:
-    #if not wantExitCode:
     discard exitCode
     output = output.replace(re"^\s+")
     output = output.replace(re"\s+$")
@@ -108,7 +117,6 @@ proc execCommand*(
     discard output
     discard exitCode
 
-  # return "empty"
 
 proc runCommand*( 
   command: string, 
@@ -119,6 +127,10 @@ proc runCommand*(
   needEnviroment: bool = false,
   raw: bool = false
 ): bool =
+  ##[
+    | Just a wrapper to call execCommand but with a returning boolean
+    | Let's name it: created a Facade for `execCommand`_
+  ]##
 
   result = false
   try:
@@ -137,12 +149,10 @@ proc runCommand*(
       echo getCurrentExceptionMsg()
     result = false
 
-#[
-  probably nim has a bug here, 
-  if i use the execCommand proc and discard the output, 
-  i get an illegal file access error
-]#
 proc spawnCommand*( command: string, user: string = "root", group: string = "" ) =
+  ##[
+    Another wrapper for execCommand, just to prevent inteferrences and illegal actions 
+  ]##
   if DEBUG:
     echo "Run command: " & command
 
@@ -168,11 +178,12 @@ proc spawnCommand*( command: string, user: string = "root", group: string = "" )
   #discard output
   #discard exitCode
 
-proc startCommand* ( command, user: string ) =
+proc startCommand* ( command, user: string, group: string ) =
+  ## | Facade for spawnCommand
+  ## | isActive returns the state of this task
+  
   shouldStop = false
-  spawn spawnCommand( command, user = user )
-  # an error will never arrive, because of async  
-  # except CmdRaisesError:
+  spawn spawnCommand( command, user = user, group = group )
 
   ## you have to sync yourself, because this proc should not be blocking!
   ## sync()
@@ -242,12 +253,13 @@ proc validCommand*( command: string, isRaw: bool = false, user: string = "root" 
   return exitCode
 
 proc checkCommand* ( command: string, isRaw: bool = false, user: string = "root" ): bool =
+  result = false
   let res = validCommand( command, isRaw = isRaw, user = user )
+  echo "res: ", res
   if res == 0:
-    return true
-  if DEBUG:
+    result = true
+  else:
     echo "INVALID COMMAND: " & command
-  return false
 
 proc isActive* (): bool =
   return not shouldStop
@@ -285,12 +297,12 @@ proc installPackage*( package: string ): bool =
       break
 
   result = true
-  if not checkCommand( "apt install -s " & commandAlias, isRaw = true ):
+  if not checkCommand( "dpkg --get-selections | grep \"" & commandAlias & "[[:space:]]*install$\" >/dev/null", isRaw = true ):
     echo "need to add spinners to this installation!"
     ## TODO add spinners here!
     discard execCommand( "apt install -y " & commandAlias, user = "root" )
     #HISTORY.add( "Installed package: " & commandAlias )  
-    result = checkCommand( "apt install -s " commandAlias, isRaw = true )
+    result = checkCommand( "dpkg --get-selections | grep \"" & commandAlias & "[[:space:]]*install$\" >/dev/null", isRaw = true )
 
 proc installPackages*( packages: seq[ string ] ): bool =
   ## TODO remove this misuse of exceptions here!!!
@@ -304,7 +316,7 @@ proc installPackages*( packages: seq[ string ] ): bool =
   return true
 
 
-######## only littl helper for testing
+# only littl helper for testing
 proc runAndWaitForCommand( command: string ) =
   startCommand( command, user = "poisonweed" )
   

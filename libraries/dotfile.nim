@@ -196,7 +196,7 @@ proc checkDependencies*( dependencies: Dependencies, vars: DotfileModuleAttribut
           break checkDep
 
       of package:
-        if not checkCommand( "apt install -s " & dep.package, isRaw = true ) and not tryToFix( dep, vars ):
+        if not checkCommand( "dpkg --get-selections | grep \"" & dep.package & "[[:space:]]*install$\" >/dev/null", isRaw = true ) and not tryToFix( dep, vars ):
           break checkDep
 
       else: # dir or file

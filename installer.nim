@@ -1,14 +1,20 @@
-#[
-
-  Dotfiles
-
-  Script to create my linux enviroment
+##[
+ Script: Dotfiles
+ ----------------
 
   Before running this script, you need to execute: buildModules
 
-  Date: 10.04.2017 - 00:15 - v0.7
-  Author: LimeBlack ~ David Crimi
-]#
+ Script to create my linux enviroment
+
+ :Author: **LimeBlack ~ David Crimi**  
+ :Date:   **10.04.2017 - 00:15 - v0.7**  
+
+ :Useful:
+   `buildModules <buildModules.html>`_
+   `installModules <installModules.html>`_
+   `buildEnvironment <buildEnvironment.html>`_
+
+]##
 
 from os     import commandLineParams, getCurrentDir
 from posix  import onSignal, SIGINT, SIGTERM 
@@ -23,7 +29,7 @@ import WrongOS, CmdRaisesError
 from libraries.arnold.arnold       
 import execCommand, checkCommand
 
-## import dotfiles helper
+# import dotfiles helper
 from libraries.dotfile
 import askUser, checkRoot, getArch, getDistribution, checkServer
 
@@ -51,12 +57,16 @@ let SUCCESS: string = """
 """
 let VERSION: string = "v0.9 - 16.04.2017 - 00:25"
 let AUTHOR:  string = "LimeBlack ~ David Crimi"
-var PATH:    string = "" #os.getEnv("PATH") ## TODO probably i need to use arnold to get the corrent enviroment
+var PATH:    string = "" #os.getEnv("PATH") 
+# TODO probably i need to use arnold to get the corrent enviroment
+
 var HOME:    string = "" # /home/poisonweed
 var USER:    string = "" # your used user -> install packages and enviroment for him!
 
 var MODULES: seq[ string ] = @[] # hold list of available modules
-var HISTORY: seq[ string ] = @[] ## TODO xD replace HISTORY with cleaner summary and add async logger
+var HISTORY: seq[ string ] = @[] 
+# TODO xD replace HISTORY with cleaner summary and add async logger
+
 var PWD:     string  # working dir 
 var ARCH:    string  # used arch eg: x86_64
 var DIST:    string  # used dist eg: Ubuntu or Debian
@@ -64,11 +74,14 @@ var SILENT:  bool    # ask questions?
 var FORCE:   bool    # should overwrite all?
 # TODO var PKG_MNG: string  # used package manager: only apt and apt-get for now!
 
-## cant check if file exists, compiler stops compiling anyway
+# cant check if file exists, compiler stops compiling anyway
 include "importModules.nim"
 echo MODULES
 
 proc buildSummary(): string = 
+  ##[
+    used to build a Summary String
+  ]##
   result = SUCCESS
   for event in HISTORY:
     result = result & event & "\n"
@@ -83,7 +96,7 @@ proc stopApplication(
   HISTORY.add( "Closed Application" )
   quit(exitcode)
 
-## TODO wanna fetch ctrl+d, but: CTRL+D is not a signal, it's EOF (End-Of-File). It closes the stdin pipe.
+# TODO wanna fetch ctrl+d, but: CTRL+D is not a signal, it's EOF (End-Of-File). It closes the stdin pipe.
 # CTRL + C
 onSignal( SIGINT, SIGTERM ):
   
@@ -95,10 +108,10 @@ onSignal( SIGINT, SIGTERM ):
   stopApplication( message = msg, exitcode = 130 )
 
 
-## START ################################
+# START ################################
 when isMainModule:
 
-  ## TODO: create a NIM installer in Bash! ~ replace with M20Nim Module
+  # TODO: create a NIM installer in Bash! ~ replace with M20Nim Module
   echo "create a NIM installer in Bash!"
 
   # check cli-params
