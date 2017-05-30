@@ -36,7 +36,7 @@ import WrongOS, CantInstallPackage
 
 # command executor
 from arnold.arnold       
-import execCommand, setOwner, validCommand, checkCommand, checkFile
+import execCommand, validCommand, checkCommand, checkFile
 
 from arnold.arnold       
 import startCommand, spawnCommand, isActive, installPackage, installPackages
