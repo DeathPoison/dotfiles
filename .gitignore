@@ -4,6 +4,10 @@ installer
 installModules.nim
 importModules.nim
 
+*.html
+libraries/*.html
+libraries/*/*.html
+
 modules/*
 !modules/*.nim
 !modules/*.nim.template

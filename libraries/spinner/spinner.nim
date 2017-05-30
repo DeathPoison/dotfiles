@@ -1,3 +1,26 @@
+##[
+ Library: Spinner
+ -----------------
+
+  This lib is inspired by https://github.com/helloIAmPau/node-spinner
+
+ | This Library will show a Spinner while you wait for s.th.
+ | I need to add a percentage level for future reuse...
+
+ :: 
+  v0.2 - 30.05.2017 - 15:00
+       - added docStrings
+
+  v0.1 - init Version
+
+ :Author: **LimeBlack ~ David Crimi**
+ :Useful: 
+    `Dotfile <../dotfile.html>`_
+    `Arnold <../arnold/arnold.html>`_
+]##
+
+## TODO add to nimble, after implementing the percentage levels!
+
 from os import sleep
 from posix import SIGINT, SIGTERM, onSignal
 from tables import toTable, `[]`
@@ -5,17 +28,19 @@ from unicode import Rune, utf8
 from terminal import hideCursor, showCursor, eraseLine
 from threadpool import spawn, sync
 
-#[
-  Thanks to https://github.com/helloIAmPau/node-spinner
-
-  Should describe what this lib will do, but I dont care - for the moment!
-]#
-
-## TODO add spinners to nimble!
-
 type
   Spinner* = object
-    spinner*:          string
+    ##[ 
+      The Spinner-Object holds the current configuration
+      :spinner: current Spinner Symbol
+      :progressLabel: Label of current Spinner
+      :progressText: Description of current Task
+      :doneText: Message will shown after finish
+      :abortText: Message will shown if got any Error
+      :defaultDelay: Animation Speed in milliseconds
+      :stream: Output Stream, defaut = stdout
+    ]##
+    spinner*:       string
     progressLabel*: string
     progressText*:  string   
     doneText*:      string
@@ -95,6 +120,10 @@ proc defaultOnTick( msg: string, output: File = stdout ) =
 
 
 proc startSpinner*( sp: Spinner ) =
+  ##[
+    | Enables the output of an animated Spinner for the given Configuration stored in sp
+    | Will be done by overwriting the given stream (e.g. stdout) with the last text + symbol combination
+  ]##
   var mySpinner: Spinner = sp
   let symbol: string = getSymbol(mySpinner.spinner)
   
@@ -129,7 +158,7 @@ proc startSpinner*( sp: Spinner ) =
   if interrupted: 
     mySpinner.doneText = mySpinner.abortText
 
-  ## DONE - remove last icon and show DONEText followed by newline
+  # DONE - remove last icon and show DONEText followed by newline
   mySpinner.stream.eraseLine
   mySpinner.stream.write mySpinner.doneText & "\n"
   
@@ -137,10 +166,12 @@ proc startSpinner*( sp: Spinner ) =
   showCursor()
 
 proc spawnSpinner*( sp: Spinner ) = 
+  ## | Facade to start a spawned Spinner, is async!
+  ## | Stop Spinner with stopSpinner
   shouldStop = false
   spawn startSpinner sp
 
-proc stopSpinner*() = shouldStop = true
+proc stopSpinner*() = shouldStop = true   ## Stops the current Spinner, you should sync afterwards
 
 
 # CTRL + C

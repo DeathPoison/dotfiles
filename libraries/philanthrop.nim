@@ -1,17 +1,23 @@
-#[
+##[
 
-  Philanthrop Lib
+ Library: Philanthrop
+ ---------------------
 
-  just a little helper for broken dependencies of my modules
+  This lib requires the usage of a local .bashrc
 
-  # ! This lib requires the usage of a local .bashrc
+ just a little helper for broken dependencies of my modules
 
+ ::
   v0.1 - 25.05.2017 - 14:30
        - init version
        - added generic handlers for directories and commands 
        - added fix for home/bin directory
-]#
 
+ :Author: **LimeBlack ~ David Crimi**
+ :Useful: 
+    `Dotfile <dotfile.html>`_
+
+]##
 
 from os       import fileExists, dirExists, sleep, commandLineParams, getCurrentDir
 from net      import newSocket, connect, Port, close
@@ -47,21 +53,22 @@ from dotfileTypes
 import DotfileObj, DotfileModuleAttributes,  DependencieType, Dependencie, Dependencies
 
 
-## TODO clean imports!
+# TODO clean imports!
 let DEBUG = false
 
 
 proc fixHomeBin( USER: string, HOME: string, PATH: string ): bool =
+  ## Fix for missing Home/bin Directory
   result = false
   
-  ## make sure home/bin exists
+  # make sure home/bin exists
   let homeBin: string = HOME & r"/bin"
   if not dirExists( homeBin ):
     discard runCommand( "mkdir " & homeBin, user = USER )
 
-  ## make sure ~/bin dir exists and is in PATH
+  # make sure ~/bin dir exists and is in PATH
   if not PATH.contains( re escapeRe( homeBin ) ):
-    ## TODO need to make sure this wont be added twice
+    # TODO need to make sure this wont be added twice
     echo "check bashrc end for export path!"
     if DEBUG:
       echo "add " & HOME & "/bin to $PATH"
@@ -76,15 +83,17 @@ proc fixDirectory( PATH: string, USER: string ): bool =
     if not dirExists( PATH ):
       result = runCommand( "mkdir " & PATH & " 2>/dev/null", user = USER ) 
     
-##### fix several problems without any module managment...
+# fix several problems without any module managment...
 proc tryToFix*( dependencie: Dependencie, vars: DotfileModuleAttributes ): bool =
+  ## Generic Error Handler
+  ## | Try to fix probably missing dependencies/ or other dependencie errors
   result = false
   echo "try'in to fix this shit", dependencie
 
   # include vars like: HOME, USER, ...
   include "../buildEnvironment.nim"
 
-  ## add few ( hopefully ) helpful fixes
+  # add few ( hopefully ) helpful fixes
   case dependencie.name
   of "home/bin":
     result = fixHomeBin( USER = USER, HOME = HOME, PATH = PATH )
@@ -108,4 +117,4 @@ proc tryToFix*( dependencie: Dependencie, vars: DotfileModuleAttributes ): bool 
         result = installPackage( dependencie.package )
     else: discard
 
-  ## no fix found!
+  # no fix found!

@@ -178,43 +178,35 @@ proc spawnCommand*( command: string, user: string = "root", group: string = "" )
   #discard output
   #discard exitCode
 
-proc startCommand* ( command, user: string, group: string ) =
+proc startCommand* ( command, user: string, group: string = "" ) =
   ## | Facade for spawnCommand
   ## | isActive returns the state of this task
+  var userGroup = group
+  if group == "":
+    userGroup = user
   
   shouldStop = false
-  spawn spawnCommand( command, user = user, group = group )
+  spawn spawnCommand( command, user = user, group = userGroup )
 
   ## you have to sync yourself, because this proc should not be blocking!
   ## sync()
 
-proc setOwner*( user: string, target: string, group: string = "", isDir: bool = false ): bool =
-  if not checkFile( target, isDir = isDir ):
-    return false
 
-  var groupalternate = group
-  if group == "":
-    groupalternate = user
-
-  var chownCommand: string = "chown "
-  if isDir:
-    chownCommand = chownCommand & "-R "
-
-  discard execCommand( chownCommand & user & ":" & groupalternate & " " & target, user = "root" )
-  return true
-
-#[
-  normally this method is called for single commands
-  if you want to check compex commands, and get the exitCode, use isRaw
-
-  command hold the command you want to check
-  isRaw needs to active, to exec the unmodified command 
-]#
 proc validCommand*( command: string, isRaw: bool = false, user: string = "root" ): int =
+  ##[
+    | command hold the command you want to check
+    | isRaw needs to active, to exec the unmodified command 
+
+     | normally this method is called for single commands
+     | if you want to check compex commands, and get the exitCode, use isRaw
+
+    just return false if item is blacklisted
+    elsewhere the exitCode will be returned
+  ]##
   if DEBUG:
     echo "Check command: " & command
 
-  # just return true for blacklisted items
+  # just return false for blacklisted items
   let blacklist: seq[ string ] = @[ "python-software-properties" ]
   for hoax in blacklist:
     if command == hoax:
@@ -253,6 +245,8 @@ proc validCommand*( command: string, isRaw: bool = false, user: string = "root" 
   return exitCode
 
 proc checkCommand* ( command: string, isRaw: bool = false, user: string = "root" ): bool =
+  ## | Facade for validCommand, return [bool] true or false
+  ## | an exitCode >= 1 results to false
   result = false
   let res = validCommand( command, isRaw = isRaw, user = user )
   echo "res: ", res
@@ -262,6 +256,7 @@ proc checkCommand* ( command: string, isRaw: bool = false, user: string = "root"
     echo "INVALID COMMAND: " & command
 
 proc isActive* (): bool =
+  ## Little Helper to check if current Command is still running
   return not shouldStop
 
 
@@ -281,8 +276,8 @@ onSignal( SIGINT, SIGTERM ):
 
 ##### INSTALLER, possibly exclude to diffrent file...
 proc installPackage*( package: string ): bool =
-  ## HINT install must be quiet!
-  ## TODO add error handling here
+  ## | HINT install must be quiet!
+  ## | TODO add error handling here
 
   var commandAlias = package
 
@@ -316,11 +311,11 @@ proc installPackages*( packages: seq[ string ] ): bool =
   return true
 
 
-# only littl helper for testing
 proc runAndWaitForCommand( command: string ) =
+  ## | only littl helper for testing
+  ## | TODO track time and quit after a configurable timeout
   startCommand( command, user = "poisonweed" )
   
-  ## TODO track time and quit after a configurable timeout
   while isActive():
     stdout.write "."
     stdout.flushFile

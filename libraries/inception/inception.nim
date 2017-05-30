@@ -1,17 +1,21 @@
-#[
+##[
 
-	Inceptions - Exception Lib
+ Library: Inception
+ -----------------------
 
-	Additional Exception Types
-]#
+ Some Additional Exception Types
+
+ ::
+   v0.1 - init 
+
+ :Author: **LimeBlack ~ David Crimi**
+ :Useful: 
+    `Philanthrop <../philanthrop.html>`_
+
+]##
 
 type
-  # few  error types
-  WrongOS*            = object of Exception
-  
-  ## used in my dotfiles
-  CantInstallPackage* = object of Exception
-
-  ## TODO move to arnold lib!!!
-  CmdDoesNotExists*   = object of Exception
-  CmdRaisesError*     = object of Exception
+  WrongOS*            = object of Exception  ## Raised if wrong OS will be detected
+  CantInstallPackage* = object of Exception  ## Arnold: Raised if package can not be installed
+  CmdDoesNotExists*   = object of Exception  ## Arnold: Need to move
+  CmdRaisesError*     = object of Exception  ## Arnold: Need to move

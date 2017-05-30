@@ -1,18 +1,22 @@
-#[
+##[
+ Library: Dotfile
+ ----------------
 
-  Dotfile Lib
+ Little helper for my installer script and his modules
 
-  just a little helper for my installer script and his modules
+ ::
+    v0.2 - 25.05.2017 - 14:30
+         - moved installPackage and installPackages to arnold
+         - excluded types for reuse
+         - added philanthrop ~ checkDependencies
 
-  v0.2 - 25.05.2017 - 14:30
-       - moved installPackage and installPackages to arnold
-       - excluded types for reuse
-       - added philanthrop ~ checkDependencies
+    v0.1 - init version
 
-  v0.1 - init version
+ :Author: **LimeBlack ~ David Crimi**  
+ :Useful: 
+  `Installer <../installer.html>`_
 
-]#
-
+]##
 
 from os       import fileExists, dirExists, sleep, commandLineParams, getCurrentDir
 from net      import newSocket, connect, Port, close
@@ -44,7 +48,7 @@ import CmdDoesNotExists, CmdRaisesError
 from spinner.spinner     
 import Spinner, startSpinner, stopSpinner
 
-## philanthrop, helps with all kinds of problems
+# philanthrop, helps with all kinds of problems
 from philanthrop
 import tryToFix
 
@@ -65,20 +69,21 @@ let HELP: string = """
 """
 let VERSION: string = "v0.9 - 16.04.2017 - 00:25"
 let AUTHOR:  string = "LimeBlack ~ David Crimi"
-var HISTORY: seq[ string ] = @[] ## TODO xD replace HISTORY with cleaner summary and add async logger
+var HISTORY: seq[ string ] = @[] 
+## | TODO xD replace HISTORY with cleaner summary and add async logger
 
 
-## TODO read from .env file ~ https://github.com/euantorano/dotenv.nim 
+## | TODO read from .env file ~ https://github.com/euantorano/dotenv.nim 
 # - hint him to add namespaces           e.g.: "namespace.var = value"
 # - hint him to add array  (seq[string]) e.g.: "var[] = value"
 # - hint him to add hashes (table)       e.g.: "var[grande] = value"
 
-## TODO replace concat of long text with s.th. usefull xD, iam lazy! 
-## -> format or % or similar
+## | TODO replace concat of long text with s.th. usefull xD, iam lazy! 
+#  -> format or % or similar
 
 
-# ask user if he really want to do: whatToDo
 proc askUser*( whatToDo: string, defaultChoice: bool = true ): bool = 
+  ## ask user if he really want to do: whatToDo
   var defaultPossibilities = "[Y/n]"
   if not defaultChoice:
     defaultPossibilities = "[y/N]"
@@ -101,15 +106,16 @@ proc askUser*( whatToDo: string, defaultChoice: bool = true ): bool =
   HISTORY.add( "You answered with " & userChoice & " to the following question: " & whatToDo )
 
 #[ If egid > 500 i am not a root user! ]#
-proc checkRoot*(): bool = getegid() < 500
+proc checkRoot*(): bool = getegid() < 500  ## little helper: check if script running as root user
 
-#[ Copy Method - selfExplaining! ]#
 proc copy*( 
   inputfile, outputfile: string, 
   user: string = "", 
   isDir: bool = false,
   overwrite: bool = false 
 ): bool =
+  ## Copy Method - selfExplaining! 
+
   if DEBUG:
     echo "Try copy File: " & inputfile & " to " & outputfile
 
@@ -136,15 +142,13 @@ proc copy*(
 
   return true
 
-# get Processor Arch
 proc getArch*(): string =
-  result = execCommand( """lscpu | grep Archi | cut -d ":" -f 2""", user = "root", wantResult = true )
-  #try:
-  #except CmdDoesNotExists:
-  #  raise newException(WrongOS, "No suitable OS found...")
+  ## get Processor Arch
 
-# get current distribution
+  result = execCommand( """lscpu | grep Archi | cut -d ":" -f 2""", user = "root", wantResult = true )
+
 proc getDistribution*(): string =
+  ## get current distribution
   try:
     result = execCommand( "lsb_release -a 2>/dev/null | grep Distributor | cut -f 2", user = "root", wantResult = true )
   except CmdDoesNotExists:
@@ -152,8 +156,8 @@ proc getDistribution*(): string =
       echo "Command does not exists: " & getCurrentExceptionMsg()  
     result = execCommand( "uname", user = "root", wantResult = true )
 
-# check if server is alive
 proc checkServer*( host: string, port: Port = Port(80) ): bool =
+  ## check if server is alive
   var socket = newSocket()
   try:
     socket.connect( host, port, 500 )
@@ -164,8 +168,15 @@ proc checkServer*( host: string, port: Port = Port(80) ): bool =
     result = false
 
 
-#### add module tools:
+# add module tools
 proc checkDependencies*( dependencies: Dependencies, vars: DotfileModuleAttributes ): bool =
+  ##[
+    Helper for Modules to check if all defined Dependencies are given.
+
+    :DependencieTypes: 
+      File, Directory, Command, Service or Package
+  ]##
+  ## add detailed description here!!!
   var currentDep: Dependencie
   
   echo "checking requirements"

@@ -1,3 +1,19 @@
+##[
+
+ Script: buildEnvironment
+ --------------------------
+
+ Script usedto import neccessary VARS in Modules
+
+ ::
+   v0.2 - 30.05.2017 - 17:00
+        - added docStrings
+
+   v0.1 - init Version
+
+ :Author: **LimeBlack ~ David Crimi**
+
+]##
 #[ 
 when isMainModule:
   import tables
@@ -9,12 +25,12 @@ try:
 except:
   return false
 
-let USER   = vars.user ## vars["USER"]
-let HOME   = vars.home ## vars["HOME"]
-let ARCH   = vars.arch ## vars["ARCH"]
-let PATH   = vars.path ## vars["PATH"]
-let DIST   = vars.dist ## vars["DIST"]
-let PWD    = vars.pwd ## vars["PWD"]
-let FORCE  = vars.force ## vars["FORCE"]
-let SILENT = vars.silent ## vars["SILENT"]
+let USER   = vars.user
+let HOME   = vars.home
+let ARCH   = vars.arch
+let PATH   = vars.path
+let DIST   = vars.dist
+let PWD    = vars.pwd
+let FORCE  = vars.force
+let SILENT = vars.silent
 

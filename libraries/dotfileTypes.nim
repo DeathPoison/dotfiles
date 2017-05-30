@@ -1,15 +1,46 @@
-## TODO add descriptions!
+##[
+ Script: DotfileTypes
+ ---------------------
+
+ Holding Data-Types for Attributes and Dependencies from Modules
+
+ :: 
+  v0.3 - 30.05.2017 - 14:00
+       - added missing DocStrings
+
+  v0.2 - added DataType to hold Dependencies from Modules
+  v0.1 - added DotfileObj and DotfileAttributes
+
+ :Author: **LimeBlack ~ David Crimi**
+ :Useful: 
+    `Dotfile <dotfile.html>`_
+    `Philanthrop <philanthrop.html>`_
+]##
 
 type
-  # Container for files being used by this app
-  DotfileObj* = object           ## With the creation of a referenze
+  DotfileObj* = object 
+    ##[
+      Object which is used to hold some files or directories 
+      for copying to your home directory and setup your environment
+    ]##
     name*: string
-    isDir*: bool                 ## this object transforms into a
-    target*: string              ## immutable procedure, dont need it now!
+    isDir*: bool
+    target*: string
     overwrite*: bool
     destination*: string
 
   DotfileModuleAttributes* = object
+    ##[
+      Object which is used to transport all neccessary VARS to the modules
+      :PWD: Current working directory
+      :USER: Current username
+      :HOME: Path to HomeDir
+      :PATH: PATH from user's environment
+      :ARCH: Processor Architecture e.g. x64, i686
+      :DIST: Current running linux distribution e.g. Ubuntu, Debian
+      :FORCE: Force Mode - decide for user
+      :SILENT: Silent Mode - prevent interactions with the user
+    ]##
     pwd*: string
     user*: string
     home*: string
@@ -21,9 +52,11 @@ type
 
   ## Handle Module Requirements ~ Dependencies
   DependencieType* = enum
+    ## Possible Dependencie Types
     command, directory, file, service, package
 
   Dependencie* = object
+    ## Object which is used to describe Module-Dependencies
     name*: string
     description*: string
     case kind*: DependencieType
@@ -41,5 +74,6 @@ type
     else: discard
 
   Dependencies* = object
+    ## Object which holds a Module-Name and his collection of Dependencie-Objects
     module*: string
     dependencies*: seq[ Dependencie ]

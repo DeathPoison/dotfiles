@@ -1,16 +1,18 @@
 ##[
- Script: Dotfiles
+ Script: Installer
  ----------------
 
   Before running this script, you need to execute: buildModules
 
- Script to create my linux enviroment
+ | Script to create my linux enviroment
+ | To use it, just execute runInstallation.sh
 
  :Author: **LimeBlack ~ David Crimi**  
- :Date:   **10.04.2017 - 00:15 - v0.7**  
+ :Date:   **10.04.2017 - 00:15 ~ started from v0.7**  
 
  :Useful:
    `buildModules <buildModules.html>`_
+   `importModules <importModules.html>`_
    `installModules <installModules.html>`_
    `buildEnvironment <buildEnvironment.html>`_
 
