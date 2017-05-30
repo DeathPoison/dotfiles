@@ -7,6 +7,9 @@
 # Author: LimeBlack ~ David Crimi - deathpoison.dc@gmail.com
 # StartDate: 31.08.2014
 #
+# v1.2   - 30.05.2017 - 20:00
+#        - added some documentatioon
+#
 # v1.1   - 25.05.2017 - 20:00
 #        - added dependencie check for modules, with little error solver
 #        - excluded dotfile types
