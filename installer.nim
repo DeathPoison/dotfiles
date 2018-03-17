@@ -7,8 +7,8 @@
  | Script to create my linux enviroment
  | To use it, just execute runInstallation.sh
 
- :Author: **LimeBlack ~ David Crimi**  
- :Date:   **10.04.2017 - 00:15 ~ started from v0.7**  
+ :Author: **LimeBlack ~ David Crimi**
+ :Date:   **10.04.2017 - 00:15 ~ started from v0.7**
 
  :Useful:
    `buildModules <buildModules.html>`_
@@ -19,17 +19,17 @@
 ]##
 
 from os     import commandLineParams, getCurrentDir
-from posix  import onSignal, SIGINT, SIGTERM 
+from posix  import onSignal, SIGINT, SIGTERM
 
 from threadpool import sync
 
 # custom error types
-from libraries.inception.inception 
+from libraries.inception.inception
 import WrongOS, CmdRaisesError
 
 # command executor
-from libraries.arnold.arnold       
-import execCommand, checkCommand
+from libraries.arnold.arnold
+import execCommand, checkCommand, getPackageManager
 
 # import dotfiles helper
 from libraries.dotfile
@@ -41,13 +41,13 @@ import DotfileModuleAttributes
 
 var DEBUG: bool = false
 let HELP: string = """
-  
+
   Dotfile Installer
 
   Argument:          Description:
   "-s", "--silent"   silent mode - less output
   "-d", "--debug"    debug  mode - more output
-  "-f", "--force"    force  mode - overwrite all files   
+  "-f", "--force"    force  mode - overwrite all files
   "-h", "--help"     this help text
   "-v", "--version"  show version
 """
@@ -59,19 +59,20 @@ let SUCCESS: string = """
 """
 let VERSION: string = "v0.9 - 16.04.2017 - 00:25"
 let AUTHOR:  string = "LimeBlack ~ David Crimi"
-var PATH:    string = "" #os.getEnv("PATH") 
+var PATH:    string = "" #os.getEnv("PATH")
 # TODO probably i need to use arnold to get the corrent enviroment
 
 var HOME:    string = "" # /home/poisonweed
 var USER:    string = "" # your used user -> install packages and enviroment for him!
 
 var MODULES: seq[ string ] = @[] # hold list of available modules
-var HISTORY: seq[ string ] = @[] 
+var HISTORY: seq[ string ] = @[]
 # TODO xD replace HISTORY with cleaner summary and add async logger
 
-var PWD:     string  # working dir 
+var PWD:     string  # working dir
 var ARCH:    string  # used arch eg: x86_64
 var DIST:    string  # used dist eg: Ubuntu or Debian
+var PKG_MNG: string  # used to identify package manager of linux distribution
 var SILENT:  bool    # ask questions?
 var FORCE:   bool    # should overwrite all?
 # TODO var PKG_MNG: string  # used package manager: only apt and apt-get for now!
@@ -80,7 +81,7 @@ var FORCE:   bool    # should overwrite all?
 include "importModules.nim"
 echo MODULES
 
-proc buildSummary(): string = 
+proc buildSummary(): string =
   ##[
     used to build a Summary String
   ]##
@@ -89,10 +90,10 @@ proc buildSummary(): string =
     result = result & event & "\n"
   result = result & "##################################################"
 
-proc stopApplication( 
+proc stopApplication(
   message: string = "\n\nGo'in to stop this Application",
   exitcode: int = 0
-) = 
+) =
   echo message
   sync()
   HISTORY.add( "Closed Application" )
@@ -101,7 +102,7 @@ proc stopApplication(
 # TODO wanna fetch ctrl+d, but: CTRL+D is not a signal, it's EOF (End-Of-File). It closes the stdin pipe.
 # CTRL + C
 onSignal( SIGINT, SIGTERM ):
-  
+
   var msg: string = ""
   if not (SILENT or FORCE):
     msg = "\n\nYou Pressed CTRL + C"
@@ -145,7 +146,7 @@ when isMainModule:
   if not checkServer( host = "heise.de" ):
     echo "you need an internet connection!"
     stopApplication( exitCode = 1 )
-  
+
   try:
     ARCH = getArch()
   except WrongOS:
@@ -153,8 +154,10 @@ when isMainModule:
     echo getCurrentExceptionMsg()
     stopApplication( exitCode = 1 )
 
+  PKG_MNG = getPackageManager()
+
   # TODO add multiple package-managers
-  if not checkCommand("apt") or not checkCommand("apt-get"):
+  if PKG_MNG == "":
     stopApplication( exitCode = 1 )
 
   # TODO add error handling
@@ -174,16 +177,17 @@ when isMainModule:
   PATH = execCommand( "echo $PATH", user = USER, wantResult = true, needEnviroment = true )
 
   # print fetched environment infos
-  block checkSetup:  
+  block checkSetup:
     if SILENT or FORCE:
       break checkSetup
 
-    var enviroment: string = "" & 
+    var enviroment: string = "" &
       "---------------------------" & "\n" &
       "Your entered  User: " & USER & "\n" &
       "Your detected Arch: " & ARCH & "\n" &
       "Your detected Dist: " & DIST & "\n" &
       "Your detected Home: " & HOME & "\n" &
+      "Your detected Apt:  " & PKG_MNG & "\n" &
       "Your detected PWD:  " & PWD  & "\n" &
       "---------------------------"
 

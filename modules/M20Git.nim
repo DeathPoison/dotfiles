@@ -3,6 +3,9 @@
 
   Module to install Git
 
+  v0.3  - 17.03.2018 - 16:00
+        - added PKG_MNG, DIST to environment
+
   v0.2  - 25.05.2017 - 14:30
         - added dependencies
 
@@ -13,7 +16,7 @@
 ## import dotfiles helper
 from "../libraries/dotfile" import askUser
 
-from "../libraries/arnold/arnold"       
+from "../libraries/arnold/arnold"
 import execCommand, checkCommand
 
 from "../libraries/dotfile" import checkDependencies
@@ -25,9 +28,9 @@ import DotfileObj, DotfileModuleAttributes, Dependencies, Dependencie, command, 
 let deps: Dependencies = Dependencies(
   module: "dotfiles",
   dependencies: @[
-    Dependencie( 
-      name: "git", description: "Git Version Control System", 
-      kind: command,  command: "git" 
+    Dependencie(
+      name: "git", description: "Git Version Control System",
+      kind: command,  command: "git"
     ),
   ]
 )
@@ -68,12 +71,14 @@ proc install*( vars: DotfileModuleAttributes ): bool =
 
 
 when isMainModule:
-  
+
   include "../testEnvironment.nim"
-  
+
   discard install(DotfileModuleAttributes(
     user: USER,
     path: PATH,
     home: HOME,
-    pwd:  PWD
+    pwd:  PWD,
+    dist: DIST,
+    pkg_mng: PKG_MNG
   ))

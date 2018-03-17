@@ -1,3 +1,9 @@
+### Dotfiles
+
+Just a NIM Script to install needed tools on various Linux Distributions, mostly Debian, Ubuntu or CentOS
+
+! To run this you need to checkout my libraries from my private GitServer, and create a symlink called ```libraries``` to the corresponding folder from my NIM project.
+
 ```
 # CHANGELOG
 #
@@ -6,6 +12,10 @@
 #
 # Author: LimeBlack ~ David Crimi - deathpoison.dc@gmail.com
 # StartDate: 31.08.2014
+#
+# v1.3   - 17.05.2018 - 16:20
+#        - added CentOS support
+#        - added dynamic package managers: yum, apt
 #
 # v1.2   - 30.05.2017 - 20:00
 #        - added some documentatioon

@@ -3,11 +3,14 @@
 
   Module to install Dotfiles for Debian Based Systems
   This file really does ;)
-  
+
+  v0.3  - 17.03.2018 - 16:00
+        - added PKG_MNG, DIST to environment
+
   v0.2  - 25.05.2017 - 14:30
         - added dependencies
 
-  v0.1  - 13.05.2017 - 15:13 
+  v0.1  - 13.05.2017 - 15:13
         - working
 
   Author: LimeBlack ~ David Crimi
@@ -20,7 +23,7 @@ from tables   import `[]`, Table
 from "../libraries/dotfile"
 import askUser, copy
 
-from "../libraries/arnold/arnold"       
+from "../libraries/arnold/arnold"
 import execCommand, checkCommand, validCommand
 
 from "../libraries/dotfile" import checkDependencies
@@ -40,13 +43,13 @@ proc install*( vars: DotfileModuleAttributes ): bool =
   let deps: Dependencies = Dependencies(
     module: "dotfiles",
     dependencies: @[
-      Dependencie( 
-        name: "home/git", description: "Home git Directory, which is used for my git server", 
-        kind: directory,  path: HOME & "/git" 
+      Dependencie(
+        name: "home/git", description: "Home git Directory, which is used for my git server",
+        kind: directory,  path: HOME & "/git"
       ),
-      Dependencie( 
-        name: "home/git/EXTERNAL", description: "Home git/EXTERNAL Directory, which is used for github", 
-        kind: directory,  path: HOME & "/git/EXTERNAL" 
+      Dependencie(
+        name: "home/git/EXTERNAL", description: "Home git/EXTERNAL Directory, which is used for github",
+        kind: directory,  path: HOME & "/git/EXTERNAL"
       ),
     ]
   )
@@ -60,10 +63,10 @@ proc install*( vars: DotfileModuleAttributes ): bool =
 
   # only copy files if ~/.bashrc will be used
   if not fileExists( HOME & r"/.bashrc" ):
-    echo "No " & HOME & r"/.bashrc" & "found... skip installation of Dotfiles..." 
+    echo "No " & HOME & r"/.bashrc" & "found... skip installation of Dotfiles..."
     quit()
 
-  # install fonts 
+  # install fonts
   if not dirExists( HOME & r"/git/EXTERNAL/fonts" ):
     discard execCommand( r"git clone https://github.com/powerline/fonts.git " & HOME & r"/git/EXTERNAL/fonts 2>/dev/null", user = USER )
     discard execCommand( "cd " & HOME & r"/git/EXTERNAL/fonts && fc-cache -f -v 1>/dev/null", user = USER )
@@ -85,7 +88,7 @@ proc install*( vars: DotfileModuleAttributes ): bool =
     file.close()
 
   block createDotfiles:
-    let dotfiles: seq[ DotfileObj ] = @[ 
+    let dotfiles: seq[ DotfileObj ] = @[
       DotfileObj(
         name: "bash_alias",
         target: PWD & r"/dotfiles/bash_aliases",
@@ -125,14 +128,14 @@ proc install*( vars: DotfileModuleAttributes ): bool =
         target: PWD & r"/dotfiles/vimrc",
         destination: "/.vimrc", # user's home path is missing!
       )
-    ]    
+    ]
     for dotfile in dotfiles:
       var overwriteFile = dotfile.overwrite
       if FORCE:
         overwriteFile = true
       discard copy( dotfile.target, HOME & dotfile.destination, user = USER, isDir = dotfile.isDir, overwrite = overwriteFile )
 
-      # some packages need Clayton Handling      
+      # some packages need Clayton Handling
       case dotfile.name
       of "vim":
         if not dirExists( HOME & r"/.vim/bundle/Vundle.vim" ):
@@ -154,6 +157,8 @@ when isMainModule:
     user: USER,
     path: PATH,
     home: HOME,
-    pwd:  PWD
+    pwd:  PWD,
+    dist: DIST,
+    pkg_mng: PKG_MNG
   ))
 

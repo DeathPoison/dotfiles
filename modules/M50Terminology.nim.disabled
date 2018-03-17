@@ -3,16 +3,19 @@
 
   Module to install the Terminology Terminal
 
+  v0.2  - 17.03.2018 - 16:00
+        - added PKG_MNG, DIST to environment
+
   v0.1  - 13.05.2017 - 16:00
         - added this Module
-  
+
   Author: LimeBlack ~ David Crimi
 ]#
 
 ## import dotfiles helper
 from "../libraries/dotfile" import DotfileModuleAttributes, askUser, installPackage
 
-from "../libraries/arnold/arnold"       
+from "../libraries/arnold/arnold"
 import execCommand, checkCommand
 
 
@@ -28,7 +31,7 @@ proc install*( vars: DotfileModuleAttributes ): bool =
   echo "--------------------------------------------------"
   let sure: string = "Do you really want to add a PPA and install Terminology?"
 
-  if not askUser( sure, defaultChoice = false ): 
+  if not askUser( sure, defaultChoice = false ):
     return false
 
   discard execCommand( "add-apt-repository -y ppa:enlightenment-git/ppa", user = "root" )
@@ -39,12 +42,14 @@ proc install*( vars: DotfileModuleAttributes ): bool =
 
 
 when isMainModule:
-  
+
   include "../testEnvironment.nim"
-  
+
   discard install(DotfileModuleAttributes(
     user: USER,
     path: PATH,
     home: HOME,
-    pwd:  PWD
+    pwd:  PWD,
+    dist: DIST,
+    pkg_mng: PKG_MNG
   ))

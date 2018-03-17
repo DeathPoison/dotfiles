@@ -14,7 +14,7 @@
  :Author: **LimeBlack ~ David Crimi**
 
 ]##
-#[ 
+#[
 when isMainModule:
   import tables
   let vars: Table = {"USER":}.toTable
@@ -25,12 +25,13 @@ try:
 except:
   return false
 
-let USER   = vars.user
-let HOME   = vars.home
-let ARCH   = vars.arch
-let PATH   = vars.path
-let DIST   = vars.dist
-let PWD    = vars.pwd
-let FORCE  = vars.force
-let SILENT = vars.silent
+let USER    = vars.user
+let HOME    = vars.home
+let ARCH    = vars.arch
+let PATH    = vars.path
+let DIST    = vars.dist
+let PKG_MNG = vars.pkg_mng
+let PWD     = vars.pwd
+let FORCE   = vars.force
+let SILENT  = vars.silent
 

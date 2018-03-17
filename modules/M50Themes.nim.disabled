@@ -3,6 +3,9 @@
 
   Module to install GTK Themes
 
+  v0.2  - 17.03.2018 - 16:00
+        - added PKG_MNG, DIST to environment
+
   v0.1  - 13.05.2017 - 15:00
         - added a simple base Module
 ]#
@@ -52,5 +55,7 @@ when isMainModule:
     user: USER,
     path: PATH,
     home: HOME,
-    pwd:  PWD
+    pwd:  PWD,
+    dist: DIST,
+    pkg_mng: PKG_MNG
   ))

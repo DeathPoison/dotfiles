@@ -3,6 +3,9 @@
 
   Module to simplify the module creation process
 
+  v0.3  - 17.03.2018 - 16:00
+        - added PKG_MNG, DIST to environment
+
   v0.2  - 25.05.2017 - 14:30
         - added dependencies
 
@@ -12,10 +15,11 @@
 
 ## import dotfiles helper
 from os import fileExists
-from rdstdin  import readPasswordFromStdin
+from terminal import readPasswordFromStdin
+#from rdstdin  import readPasswordFromStdin
 from "../libraries/dotfile" import askUser
 
-from "../libraries/arnold/arnold"       
+from "../libraries/arnold/arnold"
 import execCommand, checkCommand, installPackage
 
 from "../libraries/dotfile" import checkDependencies
@@ -27,9 +31,9 @@ import DotfileObj, DotfileModuleAttributes, Dependencies, Dependencie, command, 
 let deps: Dependencies = Dependencies(
   module: "OpenSSH",
   dependencies: @[
-    Dependencie( 
-      name: "xclip", description: "xClip using Clipboard from CLI", 
-      kind: command,  command: "xclip" 
+    Dependencie(
+      name: "xclip", description: "xClip using Clipboard from CLI",
+      kind: command,  command: "xclip"
     ),
   ]
 )
@@ -44,17 +48,18 @@ proc install*( vars: DotfileModuleAttributes ): bool =
   if not checkDependencies( deps, vars ):
     return false
 
-
   echo "--------------------------------------------------"
   echo "# Going to install an OpenSSH Server."
   echo "--------------------------------------------------"
   var freshInstallation: bool = false
-  
+
+  ## TODO create shortcut to break from ssh ~ for the user
+
   block createSSHServer_application:
-    if checkCommand( "ls /etc/init.d/openssh", isRaw = true ):  
+    if checkCommand( "ls /etc/init.d/openssh", isRaw = true ):
       break createSSHServer_application
-    
-    if checkCommand( "ls /etc/init.d/ssh", isRaw = true ):      
+
+    if checkCommand( "ls /etc/init.d/ssh", isRaw = true ):
       break createSSHServer_application
 
     let sure: string = "Do you really want to install OpenSSH Server"
@@ -70,7 +75,7 @@ proc install*( vars: DotfileModuleAttributes ): bool =
 
     # check port
     let sshPort = execCommand("""cat /etc/ssh/sshd_config | grep Port | cut -d " " -f 2""", user = USER, wantResult = true )
-    
+
     if DEBUG:
       echo "Found SSH-Configuration for Port: " & sshPort
 
@@ -104,12 +109,14 @@ proc install*( vars: DotfileModuleAttributes ): bool =
 
 
 when isMainModule:
-  
+
   include "../testEnvironment.nim"
-  
+
   discard install(DotfileModuleAttributes(
     user: USER,
     path: PATH,
     home: HOME,
-    pwd:  PWD
+    pwd:  PWD,
+    dist: DIST,
+    pkg_mng: PKG_MNG
   ))

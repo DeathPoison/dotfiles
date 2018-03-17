@@ -23,9 +23,10 @@ proc install*( vars: DotfileModuleAttributes ): bool =
   let deps: Dependencies = Dependencies(
     module: "baseModule",
     dependencies: @[
-      Dependencie( 
-        name: "home/bin", description: "Home Bin Directory, which is linked to PATH", 
-        kind: directory,  path: HOME & "/bin" 
+      Dependencie(
+        name: "home/bin", description: "Home Bin Directory, which is linked to PATH",
+        kind: directory,
+        path: HOME & "/bin"
       ),
     ]
   )
@@ -38,12 +39,15 @@ proc install*( vars: DotfileModuleAttributes ): bool =
 
 
 when isMainModule:
-  
+
   include "../testEnvironment.nim"
-  
+
   discard install(DotfileModuleAttributes(
     user: USER,
     path: PATH,
     home: HOME,
-    pwd:  PWD
+    pwd:  PWD,
+    arch: ARCH,
+    dist: DIST,
+    pkg_mng: PKG_MNG
   ))

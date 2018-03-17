@@ -3,6 +3,10 @@
 
   Module to install mPad for Debian Based Systems
 
+  v0.6  - 17.03.2018 - 16:00
+        - moved dependencie installer down, so the user is asked first
+        - added PKG_MNG, DIST to environment
+
   v0.5  - 25.05.2017 - 11:11
         - added dependencies
         - moved creation of dependencies to philanthrop
@@ -20,17 +24,17 @@
 
         - need to finish build process of mpad
         - but this modules will be executed finely
-        - probaby i should add some error types 
+        - probaby i should add some error types
         - need a proc to check given vars
 
-  v0.1  - 01.05.2017 - 00:32 
+  v0.1  - 01.05.2017 - 00:32
         - first Version
 
         - goin to create modules... should be much nicer xD
         - they should be executable as single instance or as module
         - they should not be async, because of user interaction - or i implement a queue and some locking
         - for now i have to create a little dotfile helper library to use listed proc's
-        - i should give the VARS as arguments 
+        - i should give the VARS as arguments
         - for single use i should implement some command line arguments ~ BEWARE SILENT and FORCE mode!
         - THIS FILE WAS NEVER BEEN TESTED, EXECUTED OR COMPILED...NOR SINGLE NOR AS MODULE!
         - the module import does not even exist...
@@ -40,7 +44,7 @@ from threadpool import sync
 from os         import fileExists, dirExists, sleep
 
 # Handle: running commands, check status
-from "../libraries/arnold/arnold"       
+from "../libraries/arnold/arnold"
 import runCommand, checkCommand, startCommand, isActive
 
 # Handle: UserInput
@@ -71,21 +75,21 @@ Categories=Editor;Markdown;Text;Electron;Vue;Webkit;
 let deps: Dependencies = Dependencies(
   module: "mPad",
   dependencies: @[
-    Dependencie( 
-      name: "NodeJS",   description: "Node JS - Javascript Engine", 
-      command: "node",  kind: command 
+    Dependencie(
+      name: "NodeJS",   description: "Node JS - Javascript Engine",
+      command: "node",  kind: command
     ),
-    Dependencie( 
-      name: "NPM",      description: "Node Package Manager", 
-      command: "npm",   kind: command 
+    Dependencie(
+      name: "NPM",      description: "Node Package Manager",
+      command: "npm",   kind: command
     ),
-    Dependencie( 
-      name: "Yarn",     description: "Node Package Installer", 
-      command: "yarn",  kind: command  # , arguments: @[] 
+    Dependencie(
+      name: "Yarn",     description: "Node Package Installer",
+      command: "yarn",  kind: command  # , arguments: @[]
     ),
-    Dependencie( 
-      name: "home/bin", description: "Home Bin Directory, which is linked to PATH", 
-      kind: directory,  path: "/home/poisonweed/bin" 
+    Dependencie(
+      name: "home/bin", description: "Home Bin Directory, which is linked to PATH",
+      kind: directory,  path: "/home/poisonweed/bin"
     ),
     Dependencie(
       name: "libgconf2", description: "Configuration Database System for GNOME",
@@ -93,14 +97,14 @@ let deps: Dependencies = Dependencies(
     )
   ]
 )
-let sp = Spinner( 
-  spinner: "clock", 
+let sp = Spinner(
+  spinner: "clock",
   progressLabel: "Installing:",
   progressText: "VIM-Plugins: ctrlp, nerdtree, some more...",
-  doneText: "DONE!", 
-  abortText: "Stopped", 
-  defaultDelay: 75, 
-  stream: stdout 
+  doneText: "DONE!",
+  abortText: "Stopped",
+  defaultDelay: 75,
+  stream: stdout
 )
 
 let DEBUG:    bool = true ## TODO use asyncLogger
@@ -117,12 +121,6 @@ proc install*( vars: DotfileModuleAttributes ): bool =
   # include vars like: HOME, USER, ...
   include "../buildEnvironment.nim"
 
-  if not checkDependencies( deps, vars ):
-    return false
-
-  let mPadPath: string = HOME & r"/git/EXTERNAL/mpad"
-  let mPadGitCommand:   string = r"git clone " & mPadUrl & " " & mPadPath & " 2>/dev/null"
-
   if checkCommand( "mpad", user = USER ):
     return true
 
@@ -130,8 +128,14 @@ proc install*( vars: DotfileModuleAttributes ): bool =
   echo "# Going to install an mpad."
   echo "--------------------------------------------------"
 
-  if not askUser( "Want to install mpad?", defaultChoice = true ):
+  if not askUser( "Want to install mpad?" ): #, defaultChoice = true
     return false
+
+  if not checkDependencies( deps, vars ):
+    return false
+
+  let mPadPath: string = HOME & r"/git/EXTERNAL/mpad"
+  let mPadGitCommand:   string = r"git clone " & mPadUrl & " " & mPadPath & " 2>/dev/null"
 
   # clone git dir
   if not dirExists( mPadPath ):
@@ -141,7 +145,7 @@ proc install*( vars: DotfileModuleAttributes ): bool =
     spinner.spawnSpinner sp
     while isActive():       # while command is running: wait!  ~ could do sync here, but... this way iam able to include dirty hacks like set position after spinner and display some text there... iam not going to do this!!!
       sleep( 200 )
-    
+
     spinner.stopSpinner()   # stop spinnerThread
     sync()                  # make sure threads are finished @spinner, arnold
 
@@ -149,7 +153,7 @@ proc install*( vars: DotfileModuleAttributes ): bool =
   if needmPad:
     discard runCommand( "cd " & mPadPath & " && yarn", user = USER )
     discard runCommand( "cd " & mPadPath & " && yarn run build", user = USER )
-  
+
   ## TODO add x86, check an vm or similar to get ARCH string
   ## PS: Let's be clear, no MS Windows is supported!
   case ARCH
@@ -157,7 +161,7 @@ proc install*( vars: DotfileModuleAttributes ): bool =
     mpadDist = "/mPad-linux-ia32"
   of "x64", "x86_64":
     mPadDist = "/mPad-linux-x64"
-  else: discard 
+  else: discard
 
   ## create symlink to ~/bin
   if not fileExists( HOME & "/bin/mpad" ):
@@ -178,5 +182,7 @@ when isMainModule:
     path: PATH,
     home: HOME,
     pwd:  PWD,
-    arch: ARCH
+    arch: ARCH,
+    dist: DIST,
+    pkg_mng: PKG_MNG
   ))

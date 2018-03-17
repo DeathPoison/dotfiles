@@ -3,6 +3,9 @@
 
   Module to simplify the module creation process
 
+  v0.2  - 17.03.2018 - 16:00
+        - added PKG_MNG, DIST to environment
+
   v0.1  - 13.05.2017 - 17:00
         - added this Module - not tested
 ]#
@@ -12,7 +15,7 @@ from "../libraries/dotfile" import askUser
 from "../libraries/dotfileTypes" import DotfileModuleAttributes
 
 # command executor
-from "../libraries/arnold/arnold"       
+from "../libraries/arnold/arnold"
 import execCommand, checkCommand, startCommand, isActive
 
 
@@ -40,12 +43,14 @@ proc install*( vars: DotfileModuleAttributes ): bool =
 
 
 when isMainModule:
-  
+
   include "../testEnvironment.nim"
-  
+
   discard install(DotfileModuleAttributes(
     user: USER,
     path: PATH,
     home: HOME,
-    pwd:  PWD
+    pwd:  PWD,
+    dist: DIST,
+    pkg_mng: PKG_MNG
   ))
