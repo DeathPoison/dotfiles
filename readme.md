@@ -13,7 +13,7 @@ Just a NIM Script to install needed tools on various Linux Distributions, mostly
 # Author: LimeBlack ~ David Crimi - deathpoison.dc@gmail.com
 # StartDate: 31.08.2014
 #
-# v1.3   - 17.05.2018 - 16:20
+# v1.3   - 17.03.2018 - 16:20
 #        - added CentOS support
 #        - added dynamic package managers: yum, apt
 #
