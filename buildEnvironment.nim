@@ -1,11 +1,15 @@
 ##[
 
- Script: buildEnvironment
+ Template: buildEnvironment
  --------------------------
 
- Script usedto import neccessary VARS in Modules
+ Template used to import neccessary VARS in Modules
+ THIS FILE CANT BE USED AS SINGLE FILE
 
  ::
+   v0.3 - 01.05.2018 - 22:30
+        - cleaned
+
    v0.2 - 30.05.2017 - 17:00
         - added docStrings
 
@@ -14,17 +18,6 @@
  :Author: **LimeBlack ~ David Crimi**
 
 ]##
-#[
-when isMainModule:
-  import tables
-  let vars: Table = {"USER":}.toTable
-]#
-
-try:
-  echo "need to check if vars exists"
-except:
-  return false
-
 let USER    = vars.user
 let HOME    = vars.home
 let ARCH    = vars.arch
