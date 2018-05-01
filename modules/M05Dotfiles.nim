@@ -24,7 +24,7 @@ from "../libraries/dotfile"
 import askUser, copy
 
 from "../libraries/arnold/arnold"
-import execCommand, checkCommand, validCommand
+import execCommand, checkCommand, validCommand, appendFile
 
 from "../libraries/dotfile" import checkDependencies
 from "../libraries/dotfileTypes"
@@ -32,7 +32,7 @@ import DotfileObj, DotfileModuleAttributes, Dependencies, Dependencie, command, 
 
 
 ## TODO use asyncLogger
-let DEBUG = true
+let DEBUG = false
 
 proc install*( vars: DotfileModuleAttributes ): bool =
 
@@ -72,20 +72,30 @@ proc install*( vars: DotfileModuleAttributes ): bool =
     discard execCommand( "cd " & HOME & r"/git/EXTERNAL/fonts && fc-cache -f -v 1>/dev/null", user = USER )
 
   block createBashAliasConnection:
-
-    if 1 > validCommand( r"cat  " & HOME & r"/.bashrc | grep '.bash_aliases'", isRaw = true ):
+    if 0 == validCommand( r"cat  " & HOME & r"""/.bashrc | grep ".bash_aliases"""", isRaw = true):
       break createBashAliasConnection
 
-    var aliasConnection: string    = "\n\n" & r"if [ -f " & HOME & "/.bash_aliases ]; then"
+    var aliasConnection: string = "\n" & r"if [ -f " & HOME & "/.bash_aliases ]; then"
     aliasConnection = aliasConnection & "\n" & "    . " & HOME & "/.bash_aliases"
     aliasConnection = aliasConnection & "\n" & "fi" & "\n"
+    appendFile(HOME & r"/.bashrc", aliasConnection)
 
-    if DEBUG:
-      echo aliasConnection
+  block createDefaultSHELL:
+    if 0 == validCommand( r"cat " & HOME & r"""/.bashrc | grep "export SHELL"""", isRaw = true ):
+      break createDefaultSHELL
 
-    let file = open( filename = HOME & r"/.bashrc", FileMode(4))
-    file.write(aliasConnection)
-    file.close()
+    var aliasConnection: string = "\n" & "export SHELL='/bin/bash'" & "\n"
+    appendFile(HOME & r"/.bashrc", aliasConnection)
+
+  block createVTELink:
+    if 0 == validCommand( r"cat  " & HOME & r"""/.bashrc | grep vte""", isRaw = true ):
+      break createVTELink
+
+    var aliasConnection: string = "\n" & r"if [ $TILIX_ID ] || [ $VTE_VERSION ]; then" & "\n"
+    aliasConnection = aliasConnection & "  source /etc/profile.d/vte.sh" & "\n"
+    aliasConnection = aliasConnection & "fi" & "\n"
+    appendFile(HOME & r"/.bashrc", aliasConnection)
+
 
   block createDotfiles:
     let dotfiles: seq[ DotfileObj ] = @[
@@ -127,13 +137,25 @@ proc install*( vars: DotfileModuleAttributes ): bool =
         isDir: false,
         target: PWD & r"/dotfiles/vimrc",
         destination: "/.vimrc", # user's home path is missing!
+      ),
+      DotfileObj(
+        name: "vte",
+        isDir: false,
+        target: PWD & r"/dotfiles/profile.d/vte-2.91.sh",
+        destination: "/etc/profile.d/vte-2.91.sh", # user's home path is missing!
+        root: true
       )
     ]
     for dotfile in dotfiles:
       var overwriteFile = dotfile.overwrite
       if FORCE:
         overwriteFile = true
-      discard copy( dotfile.target, HOME & dotfile.destination, user = USER, isDir = dotfile.isDir, overwrite = overwriteFile )
+
+      var destination = dotfile.destination
+      if not dotfile.root:
+        destination = HOME & destination
+
+      discard copy( dotfile.target, destination, user = USER, isDir = dotfile.isDir, overwrite = overwriteFile )
 
       # some packages need Clayton Handling
       case dotfile.name
@@ -145,7 +167,15 @@ proc install*( vars: DotfileModuleAttributes ): bool =
           #discard setOwner( USER, target = HOME & "/.vim", isDir = true )
         else:
           if DEBUG:
-            echo "Vundle already exists"
+            echo "Vundle already exists..."
+      of "vte":
+        if not fileExists( r"/etc/profile.d/vte.sh" ):
+          if DEBUG:
+            echo "Create SymLink for VTE Profile ~ Tilinx"
+          discard execCommand( r"ln -s /etc/profile.d/vte-2.91.sh /etc/profile.d/vte.sh" )
+        else:
+          if DEBUG:
+            echo "VTE already exists..."
       else: discard
 
 
