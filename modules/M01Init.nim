@@ -56,7 +56,7 @@ var list_android: seq[ string ] = @[
   "android-tools-adbd",
   "android-tools-fastboot",
 ]
-let DEBUG = true ## TODO use asyncLogger
+let DEBUG = false ## TODO use asyncLogger
 
 
 proc install*( vars: DotfileModuleAttributes ): bool =
