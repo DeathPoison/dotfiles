@@ -107,7 +107,7 @@ let sp = Spinner(
   stream: stdout
 )
 
-let DEBUG:    bool = true ## TODO use asyncLogger
+let DEBUG:    bool = false ## TODO use asyncLogger
 var needmPad: bool = false
 
 var mPadDist: string = "/mPad-linux-x64"
@@ -128,7 +128,7 @@ proc install*( vars: DotfileModuleAttributes ): bool =
   echo "# Going to install an mpad."
   echo "--------------------------------------------------"
 
-  if not askUser( "Want to install mpad?" ): #, defaultChoice = true
+  if not askUser( "Want to install mpad?", defaultChoice = false ): #, defaultChoice = true
     return false
 
   if not checkDependencies( deps, vars ):
