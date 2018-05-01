@@ -37,7 +37,7 @@ let deps: Dependencies = Dependencies(
     ),
   ]
 )
-let DEBUG = true ## TODO use asyncLogger
+let DEBUG = false ## TODO use asyncLogger
 
 
 proc install*( vars: DotfileModuleAttributes ): bool =
@@ -84,7 +84,7 @@ proc install*( vars: DotfileModuleAttributes ): bool =
 
     # if fresh overwrite
     if not freshInstallation:
-      if not askUser( "Set SSH-Port to 50505", defaultChoice = true ):
+      if not askUser( "Set SSH-Port to 50505", defaultChoice = false ):
         break createSSHServer_config
 
     discard execCommand( """sed -i "s/Port 22$/Port 50505/" /etc/ssh/sshd_config""", user = "root" )
