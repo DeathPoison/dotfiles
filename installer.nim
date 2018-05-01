@@ -79,7 +79,8 @@ var FORCE:   bool    # should overwrite all?
 
 # cant check if file exists, compiler stops compiling anyway
 include "importModules.nim"
-echo MODULES
+if DEBUG:
+  echo MODULES
 
 proc buildSummary(): string =
   ##[
@@ -115,7 +116,7 @@ onSignal( SIGINT, SIGTERM ):
 when isMainModule:
 
   # TODO: create a NIM installer in Bash! ~ replace with M20Nim Module
-  echo "create a NIM installer in Bash!"
+  echo "\n\n\tWelcome to my .bashrc installer written in NIM!"
 
   # check cli-params
   when declared(commandLineParams):
