@@ -11,6 +11,11 @@
  Creates: **installModules.nim**::
    discard [MODULENAME].install( DotfileModuleAttributes( user: USER, path: PATH, home: HOME, pwd: PWD ) )
 
+ ::
+   v0.1 - 01.05.2018 - 22:30
+        - limited imports
+        - replaced with by nre
+
  :Author: **LimeBlack ~ David Crimi**
  :Useful:
    `Installer <installer.html>`_
@@ -19,7 +24,7 @@
 
 ]##
 
-import re  ## TODO limit this import
+from nre import replace, re
 from times import format, getTime, getLocalTime
 from os import walkFiles
 
@@ -61,7 +66,7 @@ when isMainModule:
   # create: import file
   importFile.write( importDocString )
   for file in walkFiles("modules/*.nim"):
-    let moduleName: string = replacef(file, re"modules/*([a-zA-Z0-9]*).nim$", "$1")
+    var moduleName: string = replace(file, re"modules/*([a-zA-Z0-9]*).nim$", "$1")
     MODULES.add( moduleName )
     importFile.write("MODULES.add(\"" & moduleName & "\")\n")
     importFile.write("import " & file[0..^5] & "\n\n")
