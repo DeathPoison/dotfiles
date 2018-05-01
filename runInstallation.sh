@@ -8,7 +8,7 @@
 ./installNim.sh
 source dotfiles/bash_aliases
 
-nim c -r buildModules.nim
-nim c installer.nim
+nim c -r buildModules.nim &>/dev/null
+nim c installer.nim &>/dev/null
 
 sudo ./installer
