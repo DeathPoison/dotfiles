@@ -1,0 +1,642 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"Tree",
+				"TreeViewItem"
+			],
+			[
+				"get",
+				"getOwnPropertyNames"
+			],
+			[
+				"state",
+				"stateCopy"
+			],
+			[
+				"thi",
+				"thisNewPrice"
+			],
+			[
+				"ths",
+				"thisNewPrice"
+			],
+			[
+				"add",
+				"addApplicationError"
+			],
+			[
+				"data",
+				"dataType"
+			],
+			[
+				"debu",
+				"debugScope"
+			],
+			[
+				"dee",
+				"deepDebug"
+			],
+			[
+				"debug",
+				"deepDebug"
+			],
+			[
+				"de",
+				"debugScope"
+			],
+			[
+				"con",
+				"controlsdiv"
+			],
+			[
+				"stream",
+				"streamData"
+			],
+			[
+				"wante",
+				"wantedCurrency"
+			],
+			[
+				"this",
+				"thisConfig"
+			],
+			[
+				"vue",
+				"vue-form-generator"
+			],
+			[
+				"categ",
+				"categoryBalloonDateFormat"
+			],
+			[
+				"val",
+				"valueBalloonsEnabled"
+			],
+			[
+				"one",
+				"oneBalloonOnly"
+			],
+			[
+				"char",
+				"chartCursorSettings"
+			],
+			[
+				"dra",
+				"dragIconHeight"
+			],
+			[
+				"use",
+				"usePeriod"
+			],
+			[
+				"perio",
+				"periodSelector"
+			],
+			[
+				"amcha",
+				"amchart"
+			],
+			[
+				"chart",
+				"chartStockGraphs"
+			],
+			[
+				"wan",
+				"wantedCurrency"
+			],
+			[
+				"show",
+				"showBallon"
+			],
+			[
+				"M_S",
+				"M_STREAM_START_TRADES"
+			],
+			[
+				"STRE",
+				"STREAM_START_TRADES"
+			],
+			[
+				"srt",
+				"streamData"
+			],
+			[
+				"wanted",
+				"wantedCurrencies"
+			],
+			[
+				"STREAM_ST",
+				"STREAM_START_ALL"
+			],
+			[
+				"cate",
+				"categoryAxis"
+			],
+			[
+				"upda",
+				"updateChart"
+			],
+			[
+				"new",
+				"newStream"
+			],
+			[
+				"strea",
+				"stream_template"
+			],
+			[
+				"my",
+				"myItem"
+			],
+			[
+				"last",
+				"lastItem"
+			],
+			[
+				"las",
+				"lastItem"
+			],
+			[
+				"GET",
+				"GET_STREAM_URL"
+			],
+			[
+				"period",
+				"selectedPeriod"
+			],
+			[
+				"parsed",
+				"parsedJSON"
+			],
+			[
+				"M_CHA",
+				"M_CHART_CREATE"
+			],
+			[
+				"webpa",
+				"webpackOptionsValidationErrors"
+			],
+			[
+				"Web",
+				"WebpackOptionsValidationError"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "libraries/spinner/spinner.nim",
+			"settings":
+			{
+				"buffer_size": 5509,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "libraries/spinner/spinner.nim.cfg",
+			"settings":
+			{
+				"buffer_size": 25,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"trailin",
+				"Trailing Spaces: Delete Trailing Spaces"
+			],
+			[
+				"trail",
+				"Trailing Spaces: Delete Trailing Spaces"
+			],
+			[
+				"syn nim",
+				"Set Syntax: Nim"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"task",
+				"Tasks: Copy Statistics"
+			],
+			[
+				"task new",
+				"Tasks: New document"
+			],
+			[
+				"remo",
+				"Package Control: Remove Package"
+			],
+			[
+				"nn",
+				"Notes: Change Color…"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"notes",
+				"Notes: Change Color…"
+			],
+			[
+				"plain",
+				"Set Syntax: Plain Text"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"rmo",
+				"Package Control: Remove Package"
+			],
+			[
+				"color",
+				"Color Picker"
+			],
+			[
+				"colo",
+				"Color Picker"
+			],
+			[
+				"styl",
+				"Set Syntax: Stylus"
+			],
+			[
+				"tra",
+				"Trailing Spaces: Delete Trailing Spaces"
+			],
+			[
+				"trao",
+				"Trailing Spaces: Toggle Trailing Spaces Highlighting"
+			],
+			[
+				"wrap",
+				"Word Wrap: Toggle"
+			],
+			[
+				"tr",
+				"Trailing Spaces: Delete Trailing Spaces"
+			],
+			[
+				"git",
+				"Package Control: Install Package"
+			],
+			[
+				"jsx",
+				"Set Syntax: JavaScript Next"
+			],
+			[
+				"java",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"lorem",
+				"Snippet: Lorem ipsum"
+			],
+			[
+				"html",
+				"Set Syntax: HTML"
+			],
+			[
+				"dat",
+				"InsertDate: Custom"
+			],
+			[
+				"javascr",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"js",
+				"Set Syntax: JSON"
+			],
+			[
+				"rein",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"ja",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"highl",
+				"Highlighter: Toggle Highlighter"
+			],
+			[
+				"previ",
+				"Markdown Preview: Preview in Browser"
+			],
+			[
+				"trai",
+				"Trailing Spaces: Delete Trailing Spaces"
+			],
+			[
+				"markd",
+				"Set Syntax: Markdown"
+			],
+			[
+				"vue",
+				"Set Syntax: Vue Component"
+			],
+			[
+				"traili",
+				"Trailing Spaces: Delete Trailing Spaces"
+			],
+			[
+				"instaltrai",
+				"Trailing Spaces: Toggle Trailing Spaces Highlighting"
+			],
+			[
+				"json",
+				"JSON Reindent: reindent file or selection"
+			],
+			[
+				"inden",
+				"Indentation: Reindent Lines"
+			]
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 368.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/home/poisonweed/git/EXTERNAL/dotfiles",
+		"/home/poisonweed/git/EXTERNAL/dotfiles/libraries",
+		"/home/poisonweed/git/EXTERNAL/dotfiles/libraries/spinner"
+	],
+	"file_history":
+	[
+		"/home/poisonweed/git/nim/libraries/inception/inception.nim",
+		"/home/poisonweed/.config/sublime-text-3/Packages/PlainTasks/messages/Tutorial.todo",
+		"/home/poisonweed/.config/sublime-text-3/Packages/PlainTasks/PlainTasks (Linux).sublime-settings",
+		"/home/poisonweed/.config/sublime-text-3/Packages/User/PlainTasks.sublime-settings",
+		"/home/poisonweed/.config/sublime-text-3/Packages/PlainTasks/messages/test.todo",
+		"/home/poisonweed/Dropbox/Notes/test.note",
+		"/home/poisonweed/tmp/SublimeNotebook_v2.0/public/mucho.md",
+		"/home/poisonweed/html/vue/vuetifyNew/.eslintrc.js",
+		"/home/poisonweed/git/electron/broker/src/renderer/components/Settings/Settings.vue",
+		"/home/poisonweed/git/electron/broker/node_modules/asynckit/lib/state.js",
+		"/home/poisonweed/git/electron/broker/package.json",
+		"/home/poisonweed/git/electron/broker/src/renderer/components/Dashboard/GraphControl.vue",
+		"/home/poisonweed/git/electron/broker/node_modules/milligram-themes/examples/dark.css",
+		"/home/poisonweed/git/electron/broker/node_modules/electron-debug/readme.md",
+		"/home/poisonweed/git/electron/broker/README.md",
+		"/home/poisonweed/git/electron/broker/src/renderer/store/types.js",
+		"/home/poisonweed/git/electron/broker/src/renderer/store/index.js",
+		"/home/poisonweed/git/electron/broker/src/renderer/store/modules/broker/binanceApi.md",
+		"/tmp/mozilla_poisonweed0/response-1.json",
+		"/tmp/mozilla_poisonweed0/response-2.json",
+		"/home/poisonweed/git/electron/broker/src/renderer/store/modules/broker/broker.js",
+		"/tmp/mozilla_poisonweed0/response-3.json",
+		"/home/poisonweed/git/electron/broker/node_modules/colors/ReadMe.md",
+		"/home/poisonweed/.config/sublime-text-3/Packages/Highlighter/highlighter.sublime-settings",
+		"/home/poisonweed/.config/sublime-text-3/Packages/User/highlighter.sublime-settings",
+		"/home/poisonweed/git/electron/broker/src/renderer/components/Trash/trash.txt",
+		"/home/poisonweed/tmp/broker/testAdvanced/node_modules/webpack/lib/webpack.js",
+		"/home/poisonweed/.config/sublime-text-3/Packages/User/Stino/app_dir.stino-settings"
+	],
+	"find":
+	{
+		"height": 29.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "libraries/spinner/spinner.nim",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5509,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2393,
+								2393
+							]
+						],
+						"settings":
+						{
+							"doccontinue.autostop": true,
+							"doccontinue.enabled": true,
+							"syntax": "Packages/NimLime/Syntaxes/Nim.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1083.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "libraries/spinner/spinner.nim.cfg",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 25,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								23,
+								0
+							]
+						],
+						"settings":
+						{
+							"doccontinue.autostop": true,
+							"doccontinue.enabled": true,
+							"syntax": "Packages/NimLime/Syntaxes/Nim_Cfg.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 29.0
+	},
+	"input":
+	{
+		"height": 67.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.unsaved_changes":
+	{
+		"height": 144.0
+	},
+	"pinned_build_system": "",
+	"project": "dotfiles.sublime-project",
+	"replace":
+	{
+		"height": 54.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"main",
+				"src/main.js"
+			],
+			[
+				"state",
+				"node_modules/asynckit/lib/state.js"
+			],
+			[
+				"",
+				"README.md"
+			],
+			[
+				"readme",
+				"node_modules/colors/ReadMe.md"
+			],
+			[
+				"packa",
+				"package.json"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 401.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
