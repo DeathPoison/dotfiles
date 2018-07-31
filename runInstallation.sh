@@ -9,7 +9,7 @@
 source dotfiles/bash_aliases
 
 ## TODO replace me with out libreary folder!
-ln -s ../../nim/libraries .
+#ln -s ../../nim/libraries .
 
 nim c -r buildModules.nim &>/dev/null
 nim c installer.nim &>/dev/null

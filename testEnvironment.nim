@@ -5,10 +5,10 @@
 from os import getEnv
 
 # command executor
-from libraries.arnold.arnold
+from libraries/arnold/arnold
 import execCommand
 
-from libraries.dotfile
+from libraries/dotfile
 import getArch, getDistribution, getPackageManager
 
 

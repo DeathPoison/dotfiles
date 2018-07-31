@@ -24,18 +24,18 @@ from posix  import onSignal, SIGINT, SIGTERM
 from threadpool import sync
 
 # custom error types
-from libraries.inception.inception
+from libraries/inception/inception
 import WrongOS, CmdRaisesError
 
 # command executor
-from libraries.arnold.arnold
+from libraries/arnold/arnold
 import execCommand, checkCommand, getPackageManager
 
 # import dotfiles helper
-from libraries.dotfile
+from libraries/dotfile
 import askUser, checkRoot, getArch, getDistribution, checkServer
 
-from libraries.dotfileTypes
+from libraries/dotfileTypes
 import DotfileModuleAttributes
 
 
