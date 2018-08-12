@@ -4,6 +4,9 @@
   Module to install Dotfiles for Debian Based Systems
   This file really does ;)
 
+  v0.4  - 10.08.2018 - 16:00
+        - added i3, rofi and feh config
+
   v0.3  - 17.03.2018 - 16:00
         - added PKG_MNG, DIST to environment
 
@@ -144,7 +147,27 @@ proc install*( vars: DotfileModuleAttributes ): bool =
         target: PWD & r"/dotfiles/profile.d/vte-2.91.sh",
         destination: "/etc/profile.d/vte-2.91.sh", # user's home path is missing!
         root: true
-      )
+      ),
+      DotfileObj(
+        name: "compton",
+        isDir: false,
+        target: PWD & r"/dotfiles/i3/compton.conf",
+        destination: "/.compton.conf", # user's home path is missing!
+        root: true
+      ),
+      DotfileObj(
+        name: "feh",
+        isDir: false,
+        target: PWD & r"/dotfiles/i3/fehbg",
+        destination: "/.fehbg", # user's home path is missing!
+        root: true
+      ),
+      DotfileObj(
+        name: "i3",
+        isDir: true,
+        target: PWD & r"/dotfiles/i3/i3",
+        destination: "/.config/i3", # user's home path is missing!
+      ),
     ]
     for dotfile in dotfiles:
       var overwriteFile = dotfile.overwrite

@@ -34,12 +34,18 @@ let list_admin: seq[ string ] = @[
   "gparted",
   "htop",
   "xclip",
-  # enviroments
-  "emacs", ## TODO replace with remacs
-  "vim",
-  "tmux",
   # various
   "python-software-properties",
+  "build-essential",
+  "automake",
+  "pwgen"
+]
+
+# enviroments
+let list_ide: seq[ string ] = @[
+  "emacs", ## TODO replace with remacs TODO add spacemacs config
+  "vim",
+  "tmux",
 ]
 
 # network packages
@@ -47,6 +53,7 @@ let list_networking: seq[ string ] = @[
   "nmap",
   "git",
   "curl",
+  "wget",
   "links2",
   "slurm",
 ]
@@ -87,6 +94,7 @@ proc install*( vars: DotfileModuleAttributes ): bool =
   discard execCommand( PKG_MNG & ' ' & updateCommand )
 
   let packages = {
+    "ide":     list_ide
     "admin":   list_admin,
     "network": list_networking,
     "android": list_android
