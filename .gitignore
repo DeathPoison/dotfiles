@@ -5,8 +5,7 @@ installModules.nim
 importModules.nim
 
 *.html
-libraries/*.html
-libraries/*/*.html
+libraries
 
 modules/*
 !modules/*.nim
