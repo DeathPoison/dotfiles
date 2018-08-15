@@ -17,7 +17,7 @@ echo "# Going to install Nim-Lang and Nimble."
 echo "--------------------------------------------------------------------------------"
 
 CURRENT_DIR=`pwd`
-DIR_GIT=$HOME"/git/EXTERNAL"
+DIR_GIT=$HOME"/git/.EXTERNAL"
 DIR_NIM=$DIR_GIT"/Nim" # Nim/ # bin/nim
 
 echo "Want to install/update Nim? [y/N]"
@@ -50,7 +50,7 @@ if [ "$userinput" == "y" ] || [ "$userinput" == "Y" ]; then
   ./koch nimble 1>/dev/null
 
   echo "need to add path, permanently"
-  PATH=$PATH:$HOME/git/EXTERNAL/Nim/bin/
+  PATH=$PATH:$DIR_NIM/bin/
 fi
 
 ## EXIT

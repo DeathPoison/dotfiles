@@ -134,7 +134,8 @@ proc install*( vars: DotfileModuleAttributes ): bool =
   if not checkDependencies( deps, vars ):
     return false
 
-  let mPadPath: string = HOME & r"/git/EXTERNAL/mpad"
+  ## TODO replace .EXTERNAL by ENVIRONMENT VAR
+  let mPadPath: string = HOME & r"/git/.EXTERNAL/mpad"
   let mPadGitCommand:   string = r"git clone " & mPadUrl & " " & mPadPath & " 2>/dev/null"
 
   # clone git dir

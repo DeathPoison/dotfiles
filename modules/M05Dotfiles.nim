@@ -51,8 +51,8 @@ proc install*( vars: DotfileModuleAttributes ): bool =
         kind: directory,  path: HOME & "/git"
       ),
       Dependencie(
-        name: "home/git/EXTERNAL", description: "Home git/EXTERNAL Directory, which is used for github",
-        kind: directory,  path: HOME & "/git/EXTERNAL"
+        name: "home/git/.EXTERNAL", description: "Home git/.EXTERNAL Directory, which is used for github",
+        kind: directory,  path: HOME & "/git/.EXTERNAL"
       ),
     ]
   )
@@ -70,9 +70,9 @@ proc install*( vars: DotfileModuleAttributes ): bool =
     quit()
 
   # install fonts
-  if not dirExists( HOME & r"/git/EXTERNAL/fonts" ):
-    discard execCommand( r"git clone https://github.com/powerline/fonts.git " & HOME & r"/git/EXTERNAL/fonts 2>/dev/null", user = USER )
-    discard execCommand( "cd " & HOME & r"/git/EXTERNAL/fonts && fc-cache -f -v 1>/dev/null", user = USER )
+  if not dirExists( HOME & r"/git/.EXTERNAL/fonts" ):
+    discard execCommand( r"git clone https://github.com/powerline/fonts.git " & HOME & r"/git/.EXTERNAL/fonts 2>/dev/null", user = USER )
+    discard execCommand( "cd " & HOME & r"/git/.EXTERNAL/fonts && fc-cache -f -v 1>/dev/null", user = USER )
 
   block createBashAliasConnection:
     if 0 == validCommand( r"cat  " & HOME & r"""/.bashrc | grep ".bash_aliases"""", isRaw = true):
@@ -153,14 +153,12 @@ proc install*( vars: DotfileModuleAttributes ): bool =
         isDir: false,
         target: PWD & r"/dotfiles/i3/compton.conf",
         destination: "/.compton.conf", # user's home path is missing!
-        root: true
       ),
       DotfileObj(
         name: "feh",
         isDir: false,
         target: PWD & r"/dotfiles/i3/fehbg",
         destination: "/.fehbg", # user's home path is missing!
-        root: true
       ),
       DotfileObj(
         name: "i3",
