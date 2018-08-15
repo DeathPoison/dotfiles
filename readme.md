@@ -13,6 +13,9 @@ Just a NIM Script to install needed tools on various Linux Distributions, mostly
 # Author: LimeBlack ~ David Crimi - deathpoison.dc@gmail.com
 # StartDate: 31.08.2014
 #
+# v1.4   - 15.08.2018 - 22:22
+#        - added i3 with rofi, feh, compton
+#
 # v1.3   - 17.03.2018 - 16:20
 #        - added CentOS support
 #        - added dynamic package managers: yum, apt
