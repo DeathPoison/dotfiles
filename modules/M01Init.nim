@@ -28,7 +28,7 @@ from "../libraries/inception/inception" import CantInstallPackage
 from "../libraries/dotfileTypes"        import DotfileModuleAttributes
 
 
-let list_admin: seq[ string ] = @[
+var list_admin: seq[ string ] = @[
   # tools
   "aptitude",
   "gparted",
@@ -85,6 +85,13 @@ proc install*( vars: DotfileModuleAttributes ): bool =
     blacklist.add("slurm")
     list_android.add("android-tools")
 
+  if DIST == "Raspbian":
+    blacklist.add("python-software-properties")
+    blacklist.add("android-tools-adb")
+    blacklist.add("android-tools-adbd")
+    blacklist.add("android-tools-fastboot")
+    list_admin.add("software-properties-common")
+
   ## update repositories
   if PKG_MNG == "yum":
     updateCommand &= " -q --assumeno"
@@ -94,7 +101,7 @@ proc install*( vars: DotfileModuleAttributes ): bool =
   discard execCommand( PKG_MNG & ' ' & updateCommand )
 
   let packages = {
-    "ide":     list_ide
+    "ide":     list_ide,
     "admin":   list_admin,
     "network": list_networking,
     "android": list_android
