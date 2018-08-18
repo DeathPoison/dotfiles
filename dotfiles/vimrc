@@ -59,7 +59,7 @@ set shiftwidth=4
 set expandtab
 set hidden
 syn on
-
+set t_RV=    " prevent hyper terminal errors
 
 " Python Settings
 autocmd Filetype python set tabstop=4
@@ -183,6 +183,18 @@ let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
 
 
 
+"" NIM LANG
+fun! JumpToDef()
+  if exists("*GotoDefinition_" . &filetype)
+    call GotoDefinition_{&filetype}()
+  else
+    exe "norm! \<C-]>"
+  endif
+endf
+
+" Jump to tag
+nn <M-g> :call JumpToDef()<cr>
+ino <M-g> <esc>:call JumpToDef()<cr>i
 
 
 
