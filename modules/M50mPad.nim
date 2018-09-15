@@ -48,11 +48,11 @@ from "../libraries/arnold/arnold"
 import runCommand, checkCommand, startCommand, isActive
 
 # Handle: UserInput
-from "../libraries/dotfile"
+from "../libraries/dotfileHelper"
 import askUser
 
 # Handle: Dependencies
-from "../libraries/dotfile" import checkDependencies
+from "../libraries/dotfileHelper" import checkDependencies
 from "../libraries/dotfileTypes"
 import DotfileModuleAttributes, Dependencies, Dependencie, command, directory, package
 
@@ -119,7 +119,7 @@ let mPadPathShortcut: string = "/usr/share/applications/mpad.desktop"
 proc install*( vars: DotfileModuleAttributes ): bool =
 
   # include vars like: HOME, USER, ...
-  include "../buildEnvironment.nim"
+  include "../libraries/buildEnvironment.nim"
 
   if checkCommand( "mpad", user = USER ):
     return true
@@ -173,6 +173,11 @@ proc install*( vars: DotfileModuleAttributes ): bool =
     let shortcutFile = open(mPadPathShortcut, fmWrite)
     shortcutFile.write(shortcut)
     shortcutFile.close
+
+proc uninstall*( vars: DotfileModuleAttributes ): bool =
+  include "../libraries/buildEnvironment.nim"
+  echo "Goin to remove M50mPad Module"
+
 
 when isMainModule:
 

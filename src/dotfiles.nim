@@ -24,18 +24,18 @@ from posix  import onSignal, SIGINT, SIGTERM
 from threadpool import sync
 
 # custom error types
-from libraries/inception/inception
+from "../libraries/inception/inception"
 import WrongOS, CmdRaisesError
 
 # command executor
-from libraries/arnold/arnold
+from "../libraries/arnold/arnold"
 import execCommand, checkCommand, getPackageManager
 
 # import dotfiles helper
-from libraries/dotfile
+from "../libraries/dotfileHelper"
 import askUser, checkRoot, getArch, getDistribution, checkServer
 
-from libraries/dotfileTypes
+from "../libraries/dotfileTypes"
 import DotfileModuleAttributes
 
 
@@ -48,6 +48,9 @@ let HELP: string = """
   "-s", "--silent"   silent mode - less output
   "-d", "--debug"    debug  mode - more output
   "-f", "--force"    force  mode - overwrite all files
+
+  "-u", "--uninstall" uninstall mode - remove installed stuff
+
   "-h", "--help"     this help text
   "-v", "--version"  show version
 """
@@ -57,10 +60,9 @@ let SUCCESS: string = """
 #
 ##################################################
 """
-let VERSION: string = "v0.9 - 16.04.2017 - 00:25"
+let VERSION: string = "v1.5 - 15.09.2018"
 let AUTHOR:  string = "LimeBlack ~ David Crimi"
-var PATH:    string = "" #os.getEnv("PATH")
-# TODO probably i need to use arnold to get the corrent enviroment
+var PATH:    string = "" # os.getEnv("PATH")
 
 var HOME:    string = "" # /home/poisonweed
 var USER:    string = "" # your used user -> install packages and enviroment for him!

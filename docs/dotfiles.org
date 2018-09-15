@@ -1,9 +1,27 @@
-* ToDo's [1/14]
- 
-** TODO ERROR: replace bashrc                                      :dotfiles:
-** TODO ERROR: shell_propmt missing                            :dotfiles:bug:
+* ToDo's [5/26]
+** TODO [#D] USE: -silent                                          :dotfiles:
+** TODO [#D] USE: -force                                           :dotfiles:
+** TODO [#D] USE: -debug                                           :dotfiles:
+** DONE [#C] CLEANUP: modules directory                            :dotfiles:
+** TODO [#C] add: zsh to packages in module 01init                 :dotfiles:
+** TODO [#C] FEATURE: config file                                 :dotfiles:
+** DONE [#A] FEATURE: cleanup script                               :dotfiles:
+** TODO [#A] FEATURE: uninstaller                                  :dotfiles:
+   add uninstall proc to modules
+   create a switch for the installer
+** DONE ERROR: every used nim file should be fresh compiled!       :dotfiles:
+** TODO [#C] FEATURE: summary                                     :dotfiles:
+
+   easly create a summary dir and store installed modules with timestamp, prop version...
+
+** TODO [#A] FEATURE: make backup of original files                :dotfiles:
+** DONE ERROR: replace bashrc                                      :dotfiles:
+** TODO ERROR: shell_prompt missing                            :dotfiles:bug:
    
    no problem, but visible..
+
+
+   not really a problem...
 
 ** TODO ERROR: rustinstaller in interactive ~ libraries/philantoph :dotfiles:bug:
 

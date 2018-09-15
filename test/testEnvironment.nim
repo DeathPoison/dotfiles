@@ -1,14 +1,18 @@
 #[
   Little Snippet for setting the corrent entvironment to test the Dotfiles-Modules
+
+  NOT REALLY A TEST FILE...
+
+  TODO: write some
 ]#
 
 from os import getEnv
 
 # command executor
-from libraries/arnold/arnold
+from "../libraries/arnold/arnold"
 import execCommand, getPackageManager
 
-from libraries/dotfile
+from "../libraries/dotfileHelper"
 import getArch, getDistribution
 
 

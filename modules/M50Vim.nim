@@ -32,10 +32,10 @@ from "../libraries/spinner/spinner"
 import Spinner, startSpinner, stopSpinner
 
 ## import dotfiles helper
-from "../libraries/dotfile"
+from "../libraries/dotfileHelper"
 import askUser
 
-from "../libraries/dotfile" import checkDependencies
+from "../libraries/dotfileHelper" import checkDependencies
 from "../libraries/dotfileTypes"
 import DotfileObj, DotfileModuleAttributes, Dependencies, Dependencie, command, directory
 
@@ -66,7 +66,7 @@ let DEBUG = true ## TODO use asyncLogger
 proc install*( vars: DotfileModuleAttributes ): bool =
 
   # include vars like: HOME, USER, ...
-  include "../buildEnvironment.nim"
+  include "../libraries/buildEnvironment.nim"
 
   if not checkDependencies( deps, vars ):
     return false
@@ -75,8 +75,12 @@ proc install*( vars: DotfileModuleAttributes ): bool =
   echo "# Going to install an VIM with Plugins."
   echo "--------------------------------------------------"
 
-  stdout.write "Installing VIM-Plugins: "
-  startCommand( "vim +PluginInstall +qall", user = USER )
+  stdout.write "Installing Spacevim:"
+  startCommand( "curl -sLf https://spacevim.org/install.sh | bash", user = USER )
+
+  #stdout.write "Installing VIM-Plugins: "
+  #startCommand( "vim +PluginInstall +qall", user = USER )
+
   spinner.spawnSpinner sp
 
   while isActive():       # while command is running: wait!  ~ could do sync here, but... this way iam able to include dirty hacks like set position after spinner and display some text there... iam not going to do this!!!
@@ -85,6 +89,9 @@ proc install*( vars: DotfileModuleAttributes ): bool =
   spinner.stopSpinner()   # stop spinnerThread
   sync()                  # make sure threads are finished @spinner, arnold
 
+proc uninstall*( vars: DotfileModuleAttributes ): bool =
+  include "../libraries/buildEnvironment.nim"
+  echo "Goin to remove M50Vim Module"
 
 
 when isMainModule:

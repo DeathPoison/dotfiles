@@ -17,12 +17,12 @@
 from os import fileExists
 from terminal import readPasswordFromStdin
 #from rdstdin  import readPasswordFromStdin
-from "../libraries/dotfile" import askUser
+from "../libraries/dotfileHelper" import askUser
 
 from "../libraries/arnold/arnold"
 import execCommand, checkCommand, installPackage
 
-from "../libraries/dotfile" import checkDependencies
+from "../libraries/dotfileHelper" import checkDependencies
 from "../libraries/dotfileTypes"
 import DotfileObj, DotfileModuleAttributes, Dependencies, Dependencie, command, directory
 
@@ -43,7 +43,7 @@ let DEBUG = false ## TODO use asyncLogger
 proc install*( vars: DotfileModuleAttributes ): bool =
 
   # include vars like: HOME, USER, ...
-  include "../buildEnvironment.nim"
+  include "../libraries/buildEnvironment.nim"
 
   if not checkDependencies( deps, vars ):
     return false
@@ -107,6 +107,9 @@ proc install*( vars: DotfileModuleAttributes ): bool =
       if not SILENT:
         echo "Public RSA Key copied to your clipboard, add it to your Git Server!"
 
+proc uninstall*( vars: DotfileModuleAttributes ): bool =
+  include "../libraries/buildEnvironment.nim"
+  echo "Goin to remove M20SSH Module"
 
 when isMainModule:
 

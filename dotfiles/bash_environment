@@ -38,7 +38,7 @@ if [ -d "/mnt/extra/poisonweed/Android" ]; then
 fi
 
 if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
-   . /etc/profile.d/vte.sh
+   . /etc/profile.d/vte-2.91.sh  # FIXME this will break sometimes...
 fi
 
 #HISTCONTROL=ignoreboth

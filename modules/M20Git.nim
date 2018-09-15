@@ -14,12 +14,12 @@
 ]#
 
 ## import dotfiles helper
-from "../libraries/dotfile" import askUser
+from "../libraries/dotfileHelper" import askUser
 
 from "../libraries/arnold/arnold"
 import execCommand, checkCommand
 
-from "../libraries/dotfile" import checkDependencies
+from "../libraries/dotfileHelper" import checkDependencies
 from "../libraries/dotfileTypes"
 import DotfileObj, DotfileModuleAttributes, Dependencies, Dependencie, command, directory
 
@@ -39,7 +39,7 @@ let deps: Dependencies = Dependencies(
 proc install*( vars: DotfileModuleAttributes ): bool =
 
   # include vars like: HOME, USER, ...
-  include "../buildEnvironment.nim"
+  include "../libraries/buildEnvironment.nim"
 
   if not checkDependencies( deps, vars ):
     return false
@@ -69,6 +69,9 @@ proc install*( vars: DotfileModuleAttributes ): bool =
     let email = stdin.readLine()
     discard execCommand( "git config --global user.email " & email, user = USER )
 
+proc uninstall*( vars: DotfileModuleAttributes ): bool =
+  include "../libraries/buildEnvironment.nim"
+  echo "Goin to remove M20Git Module"
 
 when isMainModule:
 

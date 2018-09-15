@@ -5,6 +5,10 @@
 #  Module to install Nim
 #  ! nim only work if you use my .bash_alias file! ~ will be installed with installer.module.M05Dotfiles
 #
+#
+#  v0.3  - 15.09.2018 - 16:22 - David Crimi
+#        - moved to bin
+#
 #  v0.2  - 23.05.2017 - 21:00
 #        - added smarter/simpler way to install nimble through koch
 #
@@ -16,9 +20,9 @@ echo "--------------------------------------------------------------------------
 echo "# Going to install Nim-Lang and Nimble."
 echo "--------------------------------------------------------------------------------"
 
-CURRENT_DIR=`pwd`
+DIR=$(cd "$(dirname "$0")"; pwd)
 DIR_GIT=$HOME"/git/.EXTERNAL"
-DIR_NIM=$DIR_GIT"/Nim" # Nim/ # bin/nim
+DIR_NIM=$DIR_GIT"/Nim"
 
 echo "Want to install/update Nim? [y/N]"
 read userinput
@@ -49,10 +53,13 @@ if [ "$userinput" == "y" ] || [ "$userinput" == "Y" ]; then
   # install nimble
   ./koch nimble 1>/dev/null
 
+  # install nimsuggest
+  ./koch nimsuggest 1>/dev/null
+
   echo "need to add path, permanently"
-  PATH=$PATH:$DIR_NIM/bin/
+  echo "export PATH=\$PATH\:$DIR_NIM/bin;\$HOME/.nimble" >> $HOME/.bash_rc
 fi
 
 ## EXIT
-cd $CURRENT_DIR
+cd $DIR
 exit 0

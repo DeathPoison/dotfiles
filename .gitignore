@@ -1,14 +1,16 @@
 nimcache
-buildModules
-installer
-installModules.nim
-importModules.nim
+src/buildModules
+src/installer
+src/installModules.nim
+src/uninstallModules.nim
+src/importModules.nim
 
 *.html
 libraries
 
 modules/*
+modules/*.nim.cfg
+modules/nimcache
 !modules/*.nim
 !modules/*.nim.template
-!modules/*.nim.cfg
 !modules/*.nim.disabled

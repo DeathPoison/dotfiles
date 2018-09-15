@@ -11,7 +11,7 @@
 ]#
 
 ## import dotfiles helper
-from "../libraries/dotfile" import askUser
+from "../libraries/dotfileHelper" import askUser
 from "../libraries/dotfileTypes" import DotfileModuleAttributes
 
 # command executor
@@ -22,13 +22,13 @@ import execCommand, checkCommand, startCommand, isActive
 proc install*( vars: DotfileModuleAttributes ): bool =
 
   # include vars like: HOME, USER, ...
-  include "../buildEnvironment.nim"
+  include "../libraries/buildEnvironment.nim"
 
   if checkCommand( "wine", user = USER ):
     return true
 
   echo "--------------------------------------------------"
-  echo "# Going to install Wine2.0 HQ."
+  echo "# Going to install Wine2.0 HQ. ~ Wine2.0 is old! i should install v3.x"
   echo "--------------------------------------------------"
   ## TODO https://wiki.winehq.org/Ubuntu
 
@@ -40,6 +40,10 @@ proc install*( vars: DotfileModuleAttributes ): bool =
   discard execCommand( "apt-add-repository -y https://dl.winehq.org/wine-builds/ubuntu/", user = "root" )
   discard execCommand( "apt-get update", user = "root" )
   discard execCommand( "apt-get install -y --install-recommends winehq-devel", user = "root" )
+
+proc uninstall*( vars: DotfileModuleAttributes ): bool =
+  include "../libraries/buildEnvironment.nim"
+  echo "Goin to remove M50Wine Module"
 
 
 when isMainModule:

@@ -2,7 +2,19 @@
 
 Just a NIM Script to install needed tools on various Linux Distributions, mostly Debian, Ubuntu or CentOS
 
-! To run this you need to checkout my libraries from my private GitServer, and create a symlink called ```libraries``` to the corresponding folder from my NIM project.
+Too run this:
+- checkout nim repo ~ private****
+- create symlink to libraries directory
+- call runInstallation.sh
+
+Usage of Dotfiles Installer:
+
+Argument:          Description:
+"-s", "--silent"   silent mode - less output
+"-d", "--debug"    debug  mode - more output
+"-f", "--force"    force  mode - overwrite all files
+"-h", "--help"     this help text
+"-v", "--version"  show version
 
 ```
 # CHANGELOG
@@ -12,6 +24,11 @@ Just a NIM Script to install needed tools on various Linux Distributions, mostly
 #
 # Author: LimeBlack ~ David Crimi - deathpoison.dc@gmail.com
 # StartDate: 31.08.2014
+#
+# v1.5   - 15.09.2018 - 15:42
+#        - added some structure ~ bin directory;
+#        - cleaned bashrc
+#        - added zsh
 #
 # v1.4   - 15.08.2018 - 22:22
 #        - added i3 with rofi, feh, compton

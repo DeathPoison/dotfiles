@@ -11,14 +11,14 @@ from threadpool import sync
 from os import fileExists, dirExists, sleep
 
 ## import dotfiles helper
-from "../libraries/dotfile" import askUser
+from "../libraries/dotfileHelper" import askUser
 
 # Handle: running commands, check status
 from "../libraries/arnold/arnold"
 import execCommand, checkCommand, startCommand, runCommand, installPackage, installPackages, isActive
 
 # Handle: Dependencies
-from "../libraries/dotfile" import checkDependencies
+from "../libraries/dotfileHelper" import checkDependencies
 from "../libraries/dotfileTypes"
 import DotfileObj, DotfileModuleAttributes, Dependencies, Dependencie, package, command, directory
 
@@ -44,7 +44,7 @@ let sp = Spinner(
 proc install*( vars: DotfileModuleAttributes ): bool =
 
   # include vars like: HOME, USER, ...
-  include "../buildEnvironment.nim"
+  include "../libraries/buildEnvironment.nim"
 
   let i3Path: string = HOME & r"/git/.EXTERNAL/i3-gaps"
   #let i3StatusPath: string = HOME & r"/git/.EXTERNAL/i3status-rust"
@@ -138,6 +138,9 @@ proc install*( vars: DotfileModuleAttributes ): bool =
   discard runCommand( "cd " & i3Path & "/build && make -j1", user = USER )
   discard runCommand( "cd " & i3Path & "/build && make install", user = "root" )
 
+proc uninstall*( vars: DotfileModuleAttributes ): bool =
+  include "../libraries/buildEnvironment.nim"
+  echo "Goin to remove M50i3 Module"
 
 when isMainModule:
 
