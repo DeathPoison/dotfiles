@@ -7,7 +7,12 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 alias art='php artisan'
 alias cm='cmatrix -absC cyan -u 1'
 
+# dir
+alias dir='dir --color=auto'
+alias vdir='vdir --color=auto'
+
 # some more ls aliases
+alias ls='ls --color=auto'
 alias l='ls -CF'
 alias la='ls -A'
 alias ll='ls -alF'
@@ -27,22 +32,16 @@ alias ag='sudo apt upgrade'
 alias ad='sudo apt dist-upgrade'
 
 # git
+alias gg='git status' ## deal with it xD
 alias ga='git add .'
 alias gaf='git add * --all -f'
 alias gc='git commit -a'
 alias gp='git push'
 alias gr='git reset --hard'
 alias gd='git diff'
+alias gds='git diff --staged'
 
 alias mnt='sshfs -o idmap=user -o follow_symlinks -o workaround=rename'
-
-# color ps1 prompt
-export PS1="\[\e[0m\][\[\033[1;30m\]\d \T\[\e[0m\]] \[\e[0m\]\[\e[0;92m\]\u@\h\[\e[0m\]:\[\e[0;94m\]\w\[\033[1;30m\] ($(if [[ $? == 0 ]]; then echo "\[\e[0;92m\]\342\234\223\[\e[0m\]"; else echo "\[\e[0;91m\]\342\234\227\[\e[0m\]"; fi)\[\033[1;30m\])\[\e[0m\] $ "
-
-if [ -f "$HOME/git/.EXTERNAL/Nim/bin/nim" ]; then
-    export PATH="$PATH:$HOME/git/.EXTERNAL/Nim/bin/"
-    export PATH="$PATH:$HOME/.nimble/bin/"
-fi
 
 # chrome fix for HiRes 4k Displays
 alias chrome="chromium-browser --force-device-scale-factor=2"
@@ -62,10 +61,11 @@ man() {
 
 # alias for colored grep
 alias grep='grep --color=always'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
 coloredgrep() {
     grep -n -r $1 $2 | less -R
 }
 alias gl=coloredgrep
 
-source ~/.shell_prompt
 

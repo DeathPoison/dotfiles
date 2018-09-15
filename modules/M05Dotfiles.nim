@@ -74,34 +74,22 @@ proc install*( vars: DotfileModuleAttributes ): bool =
     discard execCommand( r"git clone https://github.com/powerline/fonts.git " & HOME & r"/git/.EXTERNAL/fonts 2>/dev/null", user = USER )
     discard execCommand( "cd " & HOME & r"/git/.EXTERNAL/fonts && fc-cache -f -v 1>/dev/null", user = USER )
 
-  block createBashAliasConnection:
-    if 0 == validCommand( r"cat  " & HOME & r"""/.bashrc | grep ".bash_aliases"""", isRaw = true):
-      break createBashAliasConnection
-
-    var aliasConnection: string = "\n" & r"if [ -f " & HOME & "/.bash_aliases ]; then"
-    aliasConnection = aliasConnection & "\n" & "    . " & HOME & "/.bash_aliases"
-    aliasConnection = aliasConnection & "\n" & "fi" & "\n"
-    appendFile(HOME & r"/.bashrc", aliasConnection)
-
-  block createDefaultSHELL:
-    if 0 == validCommand( r"cat " & HOME & r"""/.bashrc | grep "export SHELL"""", isRaw = true ):
-      break createDefaultSHELL
-
-    var aliasConnection: string = "\n" & "export SHELL='/bin/bash'" & "\n"
-    appendFile(HOME & r"/.bashrc", aliasConnection)
-
-  block createVTELink:
-    if 0 == validCommand( r"cat  " & HOME & r"""/.bashrc | grep vte""", isRaw = true ):
-      break createVTELink
-
-    var aliasConnection: string = "\n" & r"if [ $TILIX_ID ] || [ $VTE_VERSION ]; then" & "\n"
-    aliasConnection = aliasConnection & "  source /etc/profile.d/vte.sh" & "\n"
-    aliasConnection = aliasConnection & "fi" & "\n"
-    appendFile(HOME & r"/.bashrc", aliasConnection)
-
-
   block createDotfiles:
     let dotfiles: seq[ DotfileObj ] = @[
+      DotfileObj(
+        name: "bash_rc",
+        target: PWD & r"/dotfiles/bash_rc",
+        destination: "/.bashrc", # user's home path is missing!
+        isDir: false,
+        overwrite: true
+      ),
+      DotfileObj(
+        name: "bash_environment",
+        target: PWD & r"/dotfiles/bash_environment",
+        destination: "/.bash_environment", # user's home path is missing!
+        isDir: false,
+        overwrite: true
+      ),
       DotfileObj(
         name: "bash_alias",
         target: PWD & r"/dotfiles/bash_aliases",
