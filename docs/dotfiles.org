@@ -1,0 +1,25 @@
+* ToDo's [1/14]
+ 
+** TODO ERROR: replace bashrc                                      :dotfiles:
+** TODO ERROR: shell_propmt missing                            :dotfiles:bug:
+   
+   no problem, but visible..
+
+** TODO ERROR: rustinstaller in interactive ~ libraries/philantoph :dotfiles:bug:
+
+   search for --yes option
+
+** TODO ADD: package: fonts-font-awesome                           :dotfiles:
+** TODO ADD: package: pavucontrol                                  :dotfiles:
+** TODO ADD: package: libdbus-1-dev                                :dotfiles:
+** TODO ADD: package: spacemacs                                    :dotfiles:
+** TODO ADD: package: remacs                                       :dotfiles:
+** TODO ADD: package: zsh                                          :dotfiles:
+** TODO ADD: pscircle background                                   :dotfiles:
+** TODO ADD: package: "Development Tools" as yum groupinstall on centos :dotfiles:
+** DONE prevent errors from wrong username                         :dotfiles:
+** TODO mpad requires wine, show a hint                         :dotfiles:ui:
+** TODO dont ask for nim if not present, build it!             :dotfiles:bug:
+** TODO create usefull UI :P                                    :dotfiles:ui:
+
+   Could be easier if all decisions run over env variables or config files, please no magic
