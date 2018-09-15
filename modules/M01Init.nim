@@ -35,7 +35,7 @@ var list_admin: seq[ string ] = @[
   "htop",
   "xclip",
   # various
-  "python-software-properties",
+  "software-properties-common",
   "build-essential",
   "automake",
   "pwgen"
