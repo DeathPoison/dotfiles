@@ -1,4 +1,4 @@
-### Dotfiles
+### Dotfiles [deprecated]
 
 Just a NIM Script to install needed tools on various Linux Distributions, mostly Debian, Ubuntu or CentOS
 
